@@ -1,0 +1,390 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{blindtext}
+\usepackage[top=1in,left=0.5in,right=0.5in,bottom=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{array}
+\usepackage{rotating}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[toc,page]{appendix}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{empheq}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{arrows, calc, shapes.multipart, chains, positioning, arrows.meta, bending}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{mathtools}
+\usepackage{esdiff}
+\usepackage{lastpage}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage[default,scale=0.95]{opensans}
+
+%increase table row heights
+\renewcommand{\arraystretch}{2}
+
+%all displaystyle
+\everymath{\displaystyle}
+
+%equation numbers
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+%ceil and floor
+\providecommand{\ceil}[1]{\left \lceil #1 \right \rceil }
+\providecommand{\floor}[1]{\left \lfloor #1 \right \rfloor }
+
+%no space mod
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
+
+\tikzset{
+	outernode/.style={draw,thick, inner sep=0},
+	innernode/.style={inner sep=.3333em, draw, rectangle split, rectangle split parts=#1}
+}
+\tikzstyle{rect} = [thick, rectangle, text centered, minimum size=18pt, inner sep=5pt, text=black, draw=black, fill=white]
+
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+%Remove indentation to all paragraph
+\setlength{\parindent}{0pt}
+
+%Better square root
+\usepackage{letltxmacro}
+\makeatletter
+\let\oldr@@t\r@@t
+\def\r@@t#1#2{%
+	\setbox0=\hbox{$\oldr@@t#1{#2\,}$}\dimen0=\ht0
+	\advance\dimen0-0.2\ht0
+	\setbox2=\hbox{\vrule height\ht0 depth -\dimen0}%
+	{\box0\lower0.4pt\box2}}
+\LetLtxMacro{\oldsqrt}{\sqrt}
+\renewcommand*{\sqrt}[2][\ ]{\oldsqrt[#1]{#2}}
+\makeatother
+
+\newcommand*\dd{\mathop{}\!\mathrm{d}} 
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+	\hskip -\arraycolsep
+	\let\@ifnextchar\new@ifnextchar
+	\array{#1}}
+\makeatother
+
+\newcommand{\grad}{\nabla}
+\newcommand{\divr}{\nabla \cdot}
+\newcommand{\curl}{\nabla \times}
+\newcommand{\bvec}[1]{\mathbf{#1}}
+\newcommand{\bhat}[1]{\hat{\mathbf{#1}}}
+\newcommand{\uvec}[1]{\hat{\mathbf{a}}_{#1}}
+
+\newcolumntype{L}{>{$}c<{$}} % math-mode version of "l" column type
+
+\pagestyle{fancy}
+\fancyhf{}
+%\rhead{Math 40 - WFY | Julius Basilla}
+%\chead{2019-04243}
+\lhead{EEE 133 Key concepts and equations}
+\cfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+
+\title{\textbf{EEE 133 Key concepts and Equations}}
+\author{AJ Mesa Jr.}
+
+\begin{document}
+	\maketitle
+	\section*{Differential Equations}
+	A linear ordinary differential equation of constant coefficients follows the form 
+	\begin{equation}
+		a_n\diff[n]{x}{t} + a_{n - 1}\diff[n - 1]{x}{t} + \ldots + a_1\diff{x}{t} + a_0x = f(t)
+	\end{equation}
+	A homogenous differential equation is an equation where the independent variable appears to have the same power. Equation (1) is homogenous when $f(t) = 0$.\\ 
+	The solution to the linear ODE in (1) has the form
+	\begin{equation}
+		x(t) = x_h(t) + x_p(t)
+	\end{equation}
+	Where $x_h(t)$ is a solution to the homogenous equation while $x_p(t)$ is a solution to the nonhomogenous equation.  \\
+	A homogenous equation has solutions of the form
+	\begin{equation}
+		x_h(t) = \exp(mt)
+	\end{equation}
+	for $m$ is a root of the equation
+	\begin{equation}
+		m^n + \frac{a_{n - 1}}{a_{n}}m^{n - 1} + \ldots + \frac{a_{1}}{a_{n}}m + \frac{a_{0}}{a_{n}} = 0
+	\end{equation}
+	If a root $m_i$ is repeated $k$ times, the corresponding solutions are $\exp(m_i t),~t\exp(m_it),~\ldots,~t^{k - 1}\exp(m_it)$
+	
+	\subsection*{Some common forms (with constant coefficients) and solutions}
+	\begin{center}
+	\begin{tabular}{| c | c | c | c |}
+		\hline
+		Equation & Characteristic Equation & Determinant & Solution \\ \hline
+		$a_1\diff{x}{t} + a_0x = 0$ & $a_1m + a_0 = 0$ & & $x = C\exp\left(-\frac{a_0}{a_1}t\right)$ \\ \hline 
+		& \multirow{3}{*}{$a_2m^2 + a_1m + a_0 = 0$} & $a_1^2 - 4a_2a_0 > 0$ & $x(t) = C_1\exp(m_1t) + C_2\exp(m_2t)$ \\ \cline{3-4}
+		$a_2\diff[2]{x}{t} + a_1\diff{x}{t} + a_0x = 0$ & & $a_1^2 - 4a_2a_0 = 0$ & $x(t) = (C_1x + C_2)\exp(m_1t)$ \\ \cline{3-4}
+		& & $a_1^2 - 4a_2a_0 < 0$ & $x(t) = \exp(\alpha t)\left[C_1\cos(\beta t) + C_2\sin(\beta t)\right]$ \\ \hline
+	\end{tabular}
+	\end{center}
+	In the last line, the characteristic equation has solutions $m_1 = \alpha + j\beta,~m_2 = \alpha - j\beta$ where $j^2 = -1$
+	
+	\section*{Laplace Transforms and Theorems}
+	A Laplace transform of a function $f(t)$ defined for all $t \geq 0$ is the transformation $$\mathcal{L}[f(t)] = F(s) = \int\limits_0^\infty f(t)\exp(-st) \dd t$$
+	An inverse Laplace transform of a function $F(s)$ is defined as:
+	$$f(t) = \mathcal{L}^{-1}[F(s)] = \frac{1}{2\pi j} \lim_{T \to \infty} \int\limits_{\gamma - jT}^{\gamma + jT} \exp(st)F(s)\dd s$$
+	
+	\subsection*{Common Functional Tranforms}
+	\begin{center}
+	\begin{tabular}{| L | L | L | L |}
+		\hline
+		f(t) = \mathcal{L}^{-1}[F(s)] & F(s) = \mathcal{L}[F(s)] & f(t) = \mathcal{L}^{-1}[F(s)] & F(s) = \mathcal{L}[F(s)] \\ \hline
+		\delta(t) & 1 & \frac{1}{\beta - \alpha}\left(\exp(-\alpha t) - \exp(-\beta t)\right)u(t) & \frac{1}{(s + \alpha)(s + \beta)} \\ \hline
+		u(t) & \frac{1}{s} & \sin(\omega t) u(t) & \frac{\omega}{s^2 + \omega^2} \\ \hline
+		tu(t) & \frac{1}{s^2} & \cos(\omega t) u(t) & \frac{s}{s^2 + \omega^2} \\ \hline 
+		\frac{t^{n - 1}}{(n - 1)!} u(t) & \frac{1}{s^n} & \sin(\omega t + \theta) u(t) & \frac{s\sin(\theta) + \omega\cos(\theta)}{s^2 + \omega^2} \\ \hline
+		\exp(-\alpha t) u(t) & \frac{1}{s + \alpha} & \cos(\omega t + \theta) u(t) & \frac{s\cos(\theta) - \omega\sin(\theta)}{s^2 + \omega^2} \\ \hline
+		t\exp(-\alpha t)u(t) & \frac{1}{(s + \alpha)^2} & \exp(-\alpha t) \sin(\omega t)u(t) & \frac{\omega}{(s + \alpha)^2 + \omega^2} \\ \hline 
+		\frac{t^{n - 1}}{(n - 1)!}\exp(-\alpha t)u(t) & \frac{1}{(s + \alpha)^n} & \exp(-\alpha t) \cos(\omega t)u(t) & \frac{s + \alpha}{(s + \alpha)^2 + \omega^2} \\ \hline 
+	\end{tabular}
+	\end{center}
+
+	\textbf{Common Operational Transforms}
+	\begin{center}
+		\begin{longtable}{|c|c|c|}
+			\hline
+			Operation & $f(t)$ & $F(s)$ \\ \hline
+			Multiplication by constant & $cf(t)$ &  $cF(s)$ \\ \hline
+			Addition & $f_1(t) + f_2(t) - f_3(t) + \ldots$ & $F_1(s) + F_2(s) - F_3(s) + \ldots$ \\ \hline
+			First time derivative & $\diff{f(t)}{t}$ & $sF(s) - f(0^-)$ \\ \hline 
+			Second time derivative & $\diff[2]{f(t)}{t}$ & $s^2F(s) - sf(0^-) - \diff{f(0^-)}{t}$ \\ \hline
+			$n$th time derivative & $\diff[n]{f(t)}{t}$ & $s^nF(s) - \sum_{i = 1}^{n}s^{n - 1}\diff[i - 1]{f}{t}$ \\ \hline
+			Time integral & $\int\limits_0^t f(x)\dd x$ & $\frac{F(s)}{s}$ \\ \hline
+			Translation in time & $f(t - a)u(t - a),~a > 0$ & $\exp(-as)F(s)$ \\ \hline
+			Translation in frequency & $\exp(-at)f(t)$ & $F(s + a)$ \\ \hline
+			Scale change & $f(at),~a > 0$ & $\frac{1}{a}F\left(\frac{s}{a}\right)$ \\ \hline
+			First frequency derivative & $tf(t)$ & $\diff{F(s)}{s}$ \\ \hline
+			$n$th frequency derivative & $t^nf(t)$ & $(-1)^n\diff[n]{F(s)}{s}$ \\ \hline
+			Frequency integral & $\frac{f(t)}{t}$ & $\int\limits_{0}^{\infty} F(u)\dd u$ \\ \hline
+		\end{longtable}
+	\end{center}
+	
+	\section{Passive components}
+	Current and Voltage for Passive Components:
+	\begin{center}
+	\begin{tabular}{| c | c | c | c |}
+		\hline
+		Component & Current & Voltage & Energy \\ \hline
+		Resistor $R$ & $i = \frac{v}{R}$ & $v = iR$ & $w_R = \int iv \dd t$\\ \hline
+		Capacitor $C$ & $i(t) = C\diff{v}{t}$ & $v(t) = v(t_0) + \frac{1}{C}\int_{t_0}^t i(t) \dd t$ & $w_C(t) = \frac{1}{2}Cv^2(t) $ \\ \hline
+		Inductor $L$ & $i(t) = i(t_0) + \frac{1}{L} \int_{t_0}^t v(t) \dd t$ & $v(t) = L\diff{i}{t}$ & $w_L(t) = \frac{1}{2}Li^2(t)$\\ \hline
+	\end{tabular}
+	\end{center}
+	Combination of passive components: 
+	\begin{center}
+	\begin{tabular}{| c | c | c |}
+		\hline
+		Component & Series & Parallel  \\ \hline
+		Resistor $R$ & $R_{eq} = \sum_{i} R_i$ & $\frac{1}{R_{eq}} = \sum_{i} \frac{1}{R_i}$ \\ \hline
+		Capacitor $C$ & $\frac{1}{C_{eq}} = \sum_{i} \frac{1}{C_i}$ & $C_{eq} = \sum_{i} C_i$  \\ \hline
+		Inductor $L$ & $L_{eq} = \sum_{i} L_i$ & $\frac{1}{L_{eq}} = \sum_{i} \frac{1}{L_i}$\\ \hline
+	\end{tabular}
+	\end{center}
+	
+	\begin{figure}[!htb]
+		\centering
+		\begin{minipage}{.5\textwidth}
+			\centering 
+			\begin{circuitikz}[american]
+				%\ctikzset{bipoles/length=1cm}
+				\draw (0, 0) node[op amp] (opamp) {}
+				(opamp.-) to[short,-*] ++(-1, 0) coordinate(A)
+				(opamp.+) -| ++(-1,-1) node[ground](B){}
+				(opamp.out) to[short,*-o] ++(1, 0) to[open, v= $v_o$] ++(0,-1.5) node[ground]{}
+				(A) to[C,l_=$C_1$,-o] ++(-2, 0) -- ++(-1, 0) coordinate(D) to [V<=$v_s$] (D |- B) node[ground]{}
+				(A) |- ++(1,1) coordinate[yshift=1ex] (L1) to[R=$R_2$] ++(2,0) -| (opamp.out) -- ++(1,0)
+				;
+			\end{circuitikz}
+			\caption{Op Amp Differentiator}
+			$$v_o(t) = -R_2C_1\diff{v_s}{t}$$
+		\end{minipage}%
+		\begin{minipage}{0.5\textwidth}
+			\centering
+			\begin{circuitikz}[american]
+				%\ctikzset{bipoles/length=1cm}
+				\draw (0, 0) node[op amp] (opamp) {}
+				(opamp.-) to[short,-*] ++(-1, 0) coordinate(A)
+				(opamp.+) -| ++(-1,-1) node[ground](B){}
+				(opamp.out) to[short,*-o] ++(1, 0) coordinate(C)
+				(C) to[open, v= $v_o$] ++(0,-1.5) node[ground]{}
+				(A) to[R,l_=$R_1$,-o] ++(-2, 0) -- ++(-1, 0) coordinate(D) to [V<=$v_s$] (D |- B) node[ground]{}
+				(A) |- ++(1,1) coordinate[yshift=1ex] (L1) to[C=$C_2$] ++(2,0) -| (opamp.out) to[short,-o] ++(1,0)
+				;
+			\end{circuitikz}
+			\caption{Op Amp Integrator}
+			$$v_o(t) = -\frac{1}{R_1C_2}\int_0^t v_s(t') \dd t'$$
+		\end{minipage}
+	\end{figure}	
+
+	\subsection{Equilibrium Equations}
+	\begin{enumerate}
+		\item \textbf{Loop Current formulation}:
+			\begin{itemize}
+				\item number of unknown currents equal number of loops
+				\item KVL equation for each loop
+			\end{itemize}
+		\item \textbf{Node Voltage formulation}:
+		\begin{itemize}
+			\item number of unknown voltage equal number of nodes except reference
+			\item KCL equation for each node
+		\end{itemize}
+	\end{enumerate}
+	
+	\subsection{First Order Circuits}
+	\begin{enumerate}
+		\item first order circuits are any circuit with a single energy storage element, an arbitrary number of sources and resistors
+		\item any current or voltage in such circuit is a solution to a first order differential equation
+		
+	\end{enumerate} 
+
+	\section{First order Unforced Response}
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		Network & Current & Voltage & Time Constant & Steady State \\ \hline
+		Sourcefree RL & $i_L(t) = I_0\exp\left(-\frac{L}{R}t\right)$ & $v_L = -RI_0\exp\left(-\frac{R}{L}t\right)$ &$\tau = \frac{L}{R}$ & $v_L = 0$ \\ \hline 
+		Sourcefree RC & $i_C(t) = -I_0\exp\left(-\frac{1}{RC}t\right)$ & $v_c = RI_0\exp\left(-\frac{1}{RC}t\right)$ & $\tau = RC$ & $i_C = 0$ \\ \hline
+	\end{tabular}
+	\end{center}
+	Typical time constant for RL is in ms, for RC in $\mu$s. For general RL and RC circuits, find the equivalent resistance as seen by the inductor/capacitor. 
+	
+	\subsection{Application of Laplace Transform}
+	\subsubsection{Method 1}
+	\begin{enumerate}
+		\item Write the differential equations for the unknown function $x(t)$
+		\item Apply Laplace transform on the equation
+		\item Use algebraic manipulation for $X(s)$ 
+		\item Apply inverse Laplace transform to get $x(t)$
+	\end{enumerate}
+
+	\subsubsection{Method 2}
+	\begin{enumerate}
+		\item Apply Laplace transform on each element
+		\item Use DC circuit analysis techniques to write the $s$-domain equations involving $X(s)$
+		\item Apply inverse Laplance transform to get $x(t)$
+	\end{enumerate}
+	
+	\textbf{Examples}
+	\begin{enumerate}
+		\item Resistors: $v = iR \Longleftrightarrow V = IR$, where $V = \mathcal{L}\{v\},~I = \mathcal{L}\{i\}$
+		\item Inductors: $v = L\diff{i}{t} \Longleftrightarrow V = L\left[sI - i(0^-)\right] = sL_ - LI_0$
+		\item Capacitors: $i = C\diff{v}{t} \Longleftrightarrow I = C\left[sV - v(0^-)\right] = sCV - CV_0$ 
+	\end{enumerate}
+
+	\section{First order Forced Response}
+	Consider a series RL circuit with voltage $v(t) = V_0u(t)$. We have the following KVL equation of current
+	\begin{align*}
+		i(t) &= 0 & t < 0 \\
+		Ri + L\diff{i}{t} &= V_0 & t > 0 
+	\end{align*}
+	This differential equation gives a solution of 
+	\begin{equation}\label{key}
+		i(t) = \left[\underbrace{\frac{V_0}{R}}_\text{forced response} - \underbrace{\left(\frac{V_0}{R} - I_0\right)\exp\left(-\frac{R}{L}t\right)}_\text{natural response}\right]u(t)
+	\end{equation}
+	\begin{enumerate}
+		\item Forced response
+			\begin{itemize}
+				\item dependent on forcing function
+				\item steady state response $t \gg \tau$
+			\end{itemize}
+		\item Natural response
+			\begin{itemize}
+				\item similar to source-free circuit
+				\item dependent on initial values and forcing function
+				\item transient response	
+			\end{itemize}
+	\end{enumerate}	
+	Generalization:
+	\begin{eqnarray}
+		i_L(t) &= \left[I_f - (I_f - I_i)\exp\left(-\frac{t}{\tau}\right)\right]u(t) \\
+		v_c(t) &= \left[V_f - (V_f - V_i)\exp\left(-\frac{t}{\tau}\right)\right]u(t)
+	\end{eqnarray}
+	Note that equation (7) is for the voltage across the capacitor in an RC circuit. 
+	
+	\subsection{Square Waves and Sequentially Switched Circuits}
+	Now consider the series RL circuit with voltage $v(t) = V_0u(t) - V_0u(t - t_0)$ and $I_0 = 0$. We can apply superposition to find the current:
+	\begin{align*}
+		i(t) &= i_1(t) + i_2(t) \\ 
+		i(t) &= \underbrace{\left[\frac{V_0}{R} \left( 1 - \exp \left( -\frac{R}{L}t \right) \right) \right]u(t)}_\text{caused by $V_0u(t)$ alone} - \underbrace{\left[\frac{V_0}{R} \left(1 - \exp \left( -\frac{R}{L}(t - t_0) \right) \right) \right]u(t - t_0)}_\text{caused by $V_0u(t - t_0)$ alone}
+	\end{align*}
+	For sequentially switched circuits, we consider the pulse width (PW) and period (T) of the pulsing. 
+	\begin{center}
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		Condition & Output & Condition & Output \\ \hline
+		PW $\gg \tau$ & time enough to fully charge & T - W $\gg \tau$ & time enough to fully discharge \\ \hline
+		PW $\ll \tau$ & time NOT enough to fully charge & T - W $\ll \tau$ & time NOT enough to fully discharge \\ \hline
+	\end{tabular}
+	\end{center}
+
+	\subsection{Laplace Transform Applications}
+	\subsubsection{$v(t) = V_0u(t)$}
+	\begin{enumerate}
+		\item Find the equivalent circuit using the Laplace equivalent of the circuit
+		\item Solve for $V(s)$. May involve partial fraction decomposition. \href{https://cnx.org/exports/b2e3f8ad-9e60-4421-a343-97e64192ffce\%4015.pdf/partial-fraction-expansion-15.pdf}{This} is a nice guide
+		\item Use Inverse Laplace transform to get $v(t)$ 
+	\end{enumerate}
+	\textbf{Transfer function.} The $s$-domain ratio of the output to input signal. 
+	\begin{equation}
+	H(s) = \frac{Y(s)}{X(s)}
+	\end{equation}
+	\begin{center}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		& & $H(s)$ of series RL \\ \hline
+		\multirow{2}{*}{Input is $V(t)$} & Output is $i(t)$ & $H(s) = \frac{1}{R + sL}$ \\ \cline{2-3}
+		& Output is $v(t)$ & $H(s) = \frac{sL}{R + sL}$ \\ \hline
+	\end{tabular}
+	\end{center}
+	
+	\subsubsection{$v(t) = V_0\cos(\omega t)$}
+	The response has the form $i(t) = I_1\cos(\omega t) + I_2\sin(\omega t)$. Exploit the transfer function of the circuit. 
+	
+	\section{Modeling of Electromechanical Systems}
+	\section{Second order Unforced Responses}
+	\section{Second order Forced Responses}
+	
+	
+\end{document}
