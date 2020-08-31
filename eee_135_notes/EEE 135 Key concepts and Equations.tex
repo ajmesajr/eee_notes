@@ -23,6 +23,9 @@
 \usepackage{setspace}
 \usepackage{mathtools}
 \usepackage{esdiff}
+\usepackage{outlines}
+\usepackage{lastpage}
+\usepackage{hyperref}
 \usepackage{multirow}
 \usepackage[default,scale=0.95]{opensans}
 
@@ -113,13 +116,15 @@
 %\rhead{Math 40 - WFY | Julius Basilla}
 %\chead{2019-04243}
 %\lhead{Mesa, Allan Jr. J.}
-%\rfoot{Page \thepage}
+\cfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
 
 \title{\textbf{EEE 135 Key concepts and Equations}}
 \author{AJ Mesa Jr.}
 
 \begin{document}
 	\maketitle	
+	\tableofcontents 
+	
 	\section*{Vectors}
 		\begin{enumerate}
 			\item $\bvec{A} \times (\bvec{B} \times \bvec{C}) = \bvec{B}(\bvec{A} \cdot \bvec{C}) - \bvec{C}(\bvec{A} \cdot \bvec{B} )$
