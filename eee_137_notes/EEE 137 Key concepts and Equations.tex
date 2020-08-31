@@ -128,6 +128,8 @@
 
 \begin{document}
 	\maketitle
+	\tableofcontents
+	
 	\section{Sets and Probabilities}
 	Some set operations and properties:
 	\begin{outline}[enumerate]
@@ -174,6 +176,20 @@
 			\2 Principle of Inclusion and Exclusion: $P\left(\bigcup _{i=1}^{n}A_{i}\right)=\sum _{k=1}^{n}\left((-1)^{k-1}\sum _{I\subseteq \{1,\ldots ,n\} \atop |I|=k} P (A_{I})\right)$	
 			\2 where $A_{I}:=\bigcap _{{i\in I}}A_{i}$
 	\end{outline}
+
+	\section{Conditional Probability}
+	\begin{outline}[enumerate]
+		\1 probability of event $A$ given $B$: $P\left(A | B\right) = \frac{P\left(A \cap B\right)}{P\left(B\right)}$
+		\1 special cases:
+		\2 $A$ is subset of $B: P\left(A | B\right) = \frac{P\left(A\right)}{P\left(B\right)}$
+		\2 $B$ is subset of $A: P\left(A | B\right) = 1$
+		\2 $A$ and $B$ are disjoint: $P\left(A | B\right) = 0$
+		\1 Independent events: $P\left(A | B\right) = P\left(A\right)$ 
+		\2 $P\left(A \cap B\right) = P\left(A\right)P\left(B\right)$
+		\1 Bayes' Theorem: If a sample space $S$ is partitioned into a set of events $A_{i}$ for $i = 1,~2,\ldots,~n$ such that $\bigcup_{i=1}^{n} A_{i} = S$, then $P\left(B\right) = \sum_{i = 1}^{n}P\left(B \cap A_{i}\right) = \sum_{i = 1}^{n}P\left(B | A_{i}\right)P\left(A_{i}\right) $	
+		\1 $P\left(A_{j} | B\right) = \frac{P\left(B | A_{j}\right)P\left(A_{j}\right)}{\sum_{i = 1}^{n}P\left(B | A_{i}\right)P\left(A_{i}\right)}$
+		\1 Conditional expectation: $E\left[X | A\right] = \sum_{x} xp_{X | A} \left(x\right)$
+	\end{outline}
 	
 	\section{Random Variables}
 	A random variable is a function that associates a unique numerical values with every outcome of an experiment
@@ -199,7 +215,7 @@
 		\1 suppose events $C$ can be decomposed of steps $A$ and $B$ (unrelated events). $C$ occurs $mn$ ways
 		\1 Bernoulli trial: only 2 possible outcomes. has probability mass function 
 		\begin{equation}
-			P_{X}(k) = \left(\stackrel{n}{k}\right)p^{k}\left(1 - p\right)^{n - k}
+			P_{X}(k) = \binom{n}{k}p^{k}\left(1 - p\right)^{n - k}
 		\end{equation}
 		\1 Expectation: $E[X] = \overline{x} = \frac{\sum_{i} N_{i}x_{i}}{\sum_{i} N_{i}} = \sum_{i} x_{i}p_{X}(x_{i})$
 		\1 Properties of expectation:
@@ -215,39 +231,72 @@
 			\2 $E\left[X\right] = 0(1 - p) + 1(p) = p$
 			\2 $E\left[X^{2}\right] = 0^{2}(1 - p) + 1^{2}p = p$
 			\2 $\sigma_{X}^{2} = p - p^{2}$
-			\2 number of successes on $n$ trials: $p_{X}(x) = \left(\stackrel{n}{x}\right)p^{x}\left(1 - p\right)^{n - x}$
-			\2 mean: $E\left[X\right] = (np)\sum\limits_{y = 0}^{n - 1} \left(\stackrel{n - 1}{y}\right)p^y\left(1 - p\right)^{n - \left(y + 1\right)} = np$
+			\2 number of successes on $n$ trials: $p_{X}(x) = \binom{n}{x}p^{x}\left(1 - p\right)^{n - x}$
+			\2 mean: $E\left[X\right] = (np)\sum\limits_{y = 0}^{n - 1} \binom{n - 1}{y}p^y\left(1 - p\right)^{n - \left(y + 1\right)} = np$
 			\2 mean square: $E\left[X^{2}\right] = np\left(1 - p\right) + n^{2}p^{2}$
 			\2 variance: $\sigma_{X}^{2} = np\left(1 - p\right)$
-	\end{outline}
-
-	\subsection{Conditional Probability}
-	\begin{outline}[enumerate]
-		\1 probability of event $A$ given $B$: $P\left(A | B\right) = \frac{P\left(A \cap B\right)}{P\left(B\right)}$
-		\1 special cases:
-			\2 $A$ is subset of $B: P\left(A | B\right) = \frac{P\left(A\right)}{P\left(B\right)}$
-			\2 $B$ is subset of $A: P\left(A | B\right) = 1$
-			\2 $A$ and $B$ are disjoint: $P\left(A | B\right) = 0$
-		\1 Independent events: $P\left(A | B\right) = P\left(A\right)$ 
-			\2 $P\left(A \cap B\right) = P\left(A\right)P\left(B\right)$
-		\1 Baye's Theorem: If a sample space $S$ is partitioned into a set of events $A_{i}$ for $i = 1,~2,\ldots,~n$ such that $\bigcup_{i=1}^{n} A_{i} = S$, then $P\left(B\right) = \sum_{i = 1}^{n}P\left(B \cap A_{i}\right) = \sum_{i = 1}^{n}P\left(B | A_{i}\right)P\left(A_{i}\right) $	
-		\1 $P\left(A_{j} | B\right) = \frac{P\left(B | A_{j}\right)P\left(A_{j}\right)}{\sum_{i = 1}^{n}P\left(B | A_{i}\right)P\left(A_{i}\right)}$
 	\end{outline}
 
 	\subsection{Continuous Random Variables}
 	\begin{outline}[enumerate]
 		\1 Uniform Random Variable: sub-intervals of the same length are equally likely
 		\1 Gaussian: model for natural random phenomena:
-			\2 Probability Distribution Function: $f_{X}(x) = \frac{1}{\sigma\sqrt{2\pi}}\exp\left(-\frac{\left(x - \overline{x}\right)^{2}}{2\sigma^2}\right)$
+			\2 Probability Distribution Function: 
+			\begin{equation}
+				f_{X}(x) = \frac{1}{\sigma\sqrt{2\pi}}\exp\left(-\frac{\left(x - \overline{x}\right)^{2}}{2\sigma^2}\right)
+			\end{equation} 
 			\2 mean: $\overline{x}$
 			\2 variance: $\sigma^{2}$
 		\1 any Gaussian RV has the standard form: $f_{X}(x) = G\left(\frac{x - \overline{x}}{\sigma}\right)$
 		\1 Exponential Random Variable : model for waiting time
-		 	\2 Probability Distribution Function: $f_{X}(t) = \lambda\exp\left(-\lambda t\right);~\lambda \geq 0$
+		 	\2 Probability Distribution Function: 
+		 	\begin{equation}
+		 		f_{X}(t) = \lambda\exp\left(-\lambda t\right);~\lambda \geq 0
+		 	\end{equation}
 		 	\2 mean: $\frac{1}{\lambda}$
 		 	\2 variancec: $\frac{1}{\lambda^{2}}$	
 	\end{outline}
 
-	\section{Bivariate Random Variable}
+	\subsection{Bivariate Random Variable}
+	\begin{outline}[enumerate]
+		\1 Joint distribution: determined by 2 independent random variables
+			\2 $F_{X, Y} = \sum_{n = 1}^{N}\sum_{m = 1}^{M}P\left(x_{n}, y_{m}\right)u\left(x - x_{n}\right)u\left(y - y_{m}\right)$
+			\2 $P\left(x_{n}, y_{m}\right)$ is the probability of the join event $\{X = x_{n}, Y = y_{m}\}$
+		\1 Properties of Joint Distribution:
+			\2 $F_{X, Y}\left(-\infty, -\infty\right) = F_{X, Y}\left(x, \infty\right) = F_{X, Y}\left(-\infty, y\right) = 0$
+			\2 $F_{X, Y}\left(+\infty, +\infty\right) = 1$
+			\2 $0 \leq F_{X, Y}\left(x, y\right) \leq 1$
+			\2 $P\{x_{1} < X \leq x_{2}. y_{1} < Y \leq y_{2}\} = F_{X, Y}\left(x_{2}, y_{2}\right) + F_{X, Y}\left(x_{1}, y_{1}\right) - F_{X, Y}\left(x_{1}, y_{2}\right) - F_{X, Y}\left(x_{2}, y_{1}\right)$	
+			\2 Marginal Distribution Functions:
+				\3 $F_{X, Y}\left(x, +\infty\right) = F_{X}(y)$
+				\3 $F_{X, Y}\left(+\infty, y\right) = F_{y}(y)$
+		\1 Joint Probability Density Function
+			\begin{align}
+				f_{X, Y}\left(x, y\right) &= \diffp{F_{X, Y}\left(x, y\right)}{{x}{y}} \\
+				f_{X, Y}\left(x, y\right) &= \sum_{n = 1}^{N}\sum_{m = 1}^{M}P\left(x_{n}, y_{m}\right)\delta \left(x - x_{n}\right)\delta \left(y - y_{m}\right)
+			\end{align}		
+		\1 Properties of Joint PDF:
+			\2 $f_{X, Y}\left(x, y\right) \geq 0$
+			\2 $\int\limits_{-\infty}^{+\infty} \int\limits_{-\infty}^{+\infty} f_{X, Y}\left(x, y\right) \dd x \dd y = 1$	
+			\2 $F_{X, Y}\left(x, y\right) \int\limits_{-\infty}^{y} \int\limits_{-\infty}^{x} f_{X, Y}\left(x', y'\right) \dd x' \dd y'$
+			\2 $F_{X}\left(x\right) \int\limits_{-\infty}^{x} \int\limits_{-\infty}^{+\infty} f_{X, Y}\left(x', y'\right) \dd y' \dd x'$
+			\2 $F_{Y}\left(y\right) \int\limits_{-\infty}^{y} \int\limits_{-\infty}^{+\infty} f_{X, Y}\left(x', y'\right) \dd x' \dd y'$
+			\2 $P\left(x_{1} < X \leq x_{2}, y_{1} < Y\leq y_{2}\right) = \int\limits_{y_{1}}^{y_{2}} \int\limits_{x_{1}}^{x_{2}} f_{X, Y}\left(x', y'\right) \dd x' \dd y'$
+			\2 $f_{X}\left(x\right) = \int\limits_{-\infty}^{+\infty} f_{X, Y}\left(x', y'\right) \dd y' = \diff{F_{X}\left(x\right)}{x}$
+			\2 $f_{Y}\left(x\right) = \int\limits_{-\infty}^{+\infty} f_{X, Y}\left(x', y'\right) \dd x' = \diff{F_{Y}\left(y\right)}{y}$
+		\1 Independence: Two events $\{X = x\}$ and $A$ are independent if $\bvec{P}\left(X = x \text{ and } A\right) = \bvec{P}\left(X = x\right)\bvec{P}\left(A\right) = p_{X}\left(x\right)\bvec{P}\left(A\right)$	
+			\2 if $P\left(A\right) > 0$, then $p_{X | A}\left(x\right) = p_{X}\left(x\right)$
+		\1 Joint moment about the origin:
+			\begin{equation}
+				m_{n, k} = E\left[X^{n} Y^{k}\right] = \iint
+				\limits_{-\infty}^{+\infty} x^{n} y^{k} f_{X, Y} \left(x, y\right) \dd x \dd y
+			\end{equation}	
+		\1 Correlation: $R_{XY} = m_{1, 1} = E\left[XY\right]$	
+			\2 if $X$ and $Y$ are statistically independent then $R_{X, Y} = E\left[X\right]E\left[Y\right]$ and $X$ and $Y$ are \textit{uncorrelated}
+			\2 if $R_{XY} = 0$, then $X$ and $Y$ are \textit{orthogonal}
+		\1 Joint Central moments: $\mu_{n, k} = E\left[\left(X - \overline{X}\right)^{n} \left(Y - \overline{Y}\right)^{k} \right]$	
+			\2 Covariance: $C_{XY} = \mu_{1, 1} = E\left[\left(X - \overline{X}\right) \left(Y - \overline{Y}\right) \right] = R_{XY} - E\left[X\right]E\left[Y\right]$
+			\2 Normalized covariance: $\rho_{XY} = \frac{C_{XY}}{\sigma_{X}\sigma_{Y}} = \frac{R_{XY} - E\left[X\right]E\left[Y\right]}{\sigma_{X}\sigma_{Y}}$
+	\end{outline}
 	
 \end{document}
