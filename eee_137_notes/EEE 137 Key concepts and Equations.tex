@@ -1,120 +1,8 @@
+
+
 \documentclass[a4paper,11pt]{article}
-\usepackage{blindtext}
-\usepackage[top=1in,left=0.5in,right=0.5in,bottom=1in]{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{graphicx}
-\usepackage{verbatim}
-\usepackage{array}
-\usepackage{rotating}
-\usepackage{caption}
-\usepackage{enumitem}
-\usepackage{multicol}
-\usepackage{longtable}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage[toc,page]{appendix}
-\usepackage{amsthm}
-\usepackage{amssymb}
-\usepackage{empheq}
-\usepackage{listings}
-\usepackage{tikz}
-\usepackage{circuitikz}
-\usetikzlibrary{arrows, calc, shapes.multipart, chains, positioning, arrows.meta, bending}
-\usepackage{xcolor}
-\usepackage{fancyhdr}
-\usepackage{setspace}
-\usepackage{mathtools}
-\usepackage{esdiff}
-\usepackage{outlines}
-\usepackage{lastpage}
-\usepackage{hyperref}
-\usepackage{multirow}
-\usepackage[default,scale=0.95]{opensans}
-
-%increase table row heights
-\renewcommand{\arraystretch}{2}
-
-%all displaystyle
-\everymath{\displaystyle}
-
-%equation numbers
-\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
-
-%ceil and floor
-\providecommand{\ceil}[1]{\left \lceil #1 \right \rceil }
-\providecommand{\floor}[1]{\left \lfloor #1 \right \rfloor }
-
-%no space mod
-\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
-
-\tikzset{
-	outernode/.style={draw,thick, inner sep=0},
-	innernode/.style={inner sep=.3333em, draw, rectangle split, rectangle split parts=#1}
-}
-\tikzstyle{rect} = [thick, rectangle, text centered, minimum size=18pt, inner sep=5pt, text=black, draw=black, fill=white]
-
-%New colors defined below
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
-%Code listing style named "mystyle"
-\lstdefinestyle{mystyle}{
-	backgroundcolor=\color{backcolour},   commentstyle=\color{codegreen},
-	keywordstyle=\color{magenta},
-	numberstyle=\tiny\color{codegray},
-	stringstyle=\color{codepurple},
-	basicstyle=\ttfamily\footnotesize,
-	breakatwhitespace=false,         
-	breaklines=true,                 
-	captionpos=b,                    
-	keepspaces=true,                 
-	numbers=left,                    
-	numbersep=5pt,                  
-	showspaces=false,                
-	showstringspaces=false,
-	showtabs=false,                  
-	tabsize=2
-}
-
-%"mystyle" code listing set
-\lstset{style=mystyle}
-
-%Remove indentation to all paragraph
-\setlength{\parindent}{0pt}
-
-%Better square root
-\usepackage{letltxmacro}
-\makeatletter
-\let\oldr@@t\r@@t
-\def\r@@t#1#2{%
-	\setbox0=\hbox{$\oldr@@t#1{#2\,}$}\dimen0=\ht0
-	\advance\dimen0-0.2\ht0
-	\setbox2=\hbox{\vrule height\ht0 depth -\dimen0}%
-	{\box0\lower0.4pt\box2}}
-\LetLtxMacro{\oldsqrt}{\sqrt}
-\renewcommand*{\sqrt}[2][\ ]{\oldsqrt[#1]{#2}}
-\makeatother
-
-\newcommand*\dd{\mathop{}\!\mathrm{d}} 
-
-\makeatletter
-\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
-	\hskip -\arraycolsep
-	\let\@ifnextchar\new@ifnextchar
-	\array{#1}}
-\makeatother
-
-\newcommand{\grad}{\nabla}
-\newcommand{\divr}{\nabla \cdot}
-\newcommand{\curl}{\nabla \times}
-\newcommand{\bvec}[1]{\mathbf{#1}}
-\newcommand{\bhat}[1]{\hat{\mathbf{#1}}}
-\newcommand{\uvec}[1]{\hat{\mathbf{a}}_{#1}}
-
-\newcolumntype{L}{>{$}c<{$}} % math-mode version of "l" column type
+\usepackage{ajmesa}
+\usepackage[top = 1in, bottom = 1in, left = 0.5in, right = 0.5in]{geometry}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -125,6 +13,8 @@
 
 \title{\textbf{EEE 137 Key concepts and Equations}}
 \author{AJ Mesa Jr.}
+
+\bibliography{137_references}
 
 \begin{document}
 	\maketitle
@@ -217,7 +107,7 @@
 		\begin{equation}
 			P_{X}(k) = \binom{n}{k}p^{k}\left(1 - p\right)^{n - k}
 		\end{equation}
-		\1 Expectation: $E[X] = \overline{x} = \frac{\sum_{i} N_{i}x_{i}}{\sum_{i} N_{i}} = \sum_{i} x_{i}p_{X}(x_{i})$
+		\1 Expectation: $E\left[X\right] = \overline{x} = \frac{\sum_{i} N_{i}x_{i}}{\sum_{i} N_{i}} = \sum_{i} x_{i}p_{X}(x_{i})$
 		\1 Properties of expectation:
 			\2 $E[c] = c$
 			\2 $E[cg(x)] = cE[g(x)]$
@@ -239,6 +129,7 @@
 
 	\subsection{Continuous Random Variables}
 	\begin{outline}[enumerate]
+		\1 Expectation: $E\left[X\right] = \overline{x} = \int\limits_{-\infty}^{+\infty} xf_{X}\left(x\right) \dd x$
 		\1 Uniform Random Variable: sub-intervals of the same length are equally likely
 		\1 Gaussian: model for natural random phenomena:
 			\2 Probability Distribution Function: 
@@ -263,13 +154,13 @@
 			\2 $F_{X, Y} = \sum_{n = 1}^{N}\sum_{m = 1}^{M}P\left(x_{n}, y_{m}\right)u\left(x - x_{n}\right)u\left(y - y_{m}\right)$
 			\2 $P\left(x_{n}, y_{m}\right)$ is the probability of the join event $\{X = x_{n}, Y = y_{m}\}$
 		\1 Properties of Joint Distribution:
-			\2 $F_{X, Y}\left(-\infty, -\infty\right) = F_{X, Y}\left(x, \infty\right) = F_{X, Y}\left(-\infty, y\right) = 0$
+			\2 $F_{X, Y}\left(-\infty, -\infty\right) = F_{X, Y}\left(x, -\infty\right) = F_{X, Y}\left(-\infty, y\right) = 0$
 			\2 $F_{X, Y}\left(+\infty, +\infty\right) = 1$
 			\2 $0 \leq F_{X, Y}\left(x, y\right) \leq 1$
 			\2 $P\{x_{1} < X \leq x_{2}. y_{1} < Y \leq y_{2}\} = F_{X, Y}\left(x_{2}, y_{2}\right) + F_{X, Y}\left(x_{1}, y_{1}\right) - F_{X, Y}\left(x_{1}, y_{2}\right) - F_{X, Y}\left(x_{2}, y_{1}\right)$	
 			\2 Marginal Distribution Functions:
 				\3 $F_{X, Y}\left(x, +\infty\right) = F_{X}(y)$
-				\3 $F_{X, Y}\left(+\infty, y\right) = F_{y}(y)$
+				\3 $F_{X, Y}\left(+\infty, y\right) = F_{y}(y)$	
 		\1 Joint Probability Density Function
 			\begin{align}
 				f_{X, Y}\left(x, y\right) &= \diffp{F_{X, Y}\left(x, y\right)}{{x}{y}} \\
@@ -282,8 +173,12 @@
 			\2 $F_{X}\left(x\right) \int\limits_{-\infty}^{x} \int\limits_{-\infty}^{+\infty} f_{X, Y}\left(x', y'\right) \dd y' \dd x'$
 			\2 $F_{Y}\left(y\right) \int\limits_{-\infty}^{y} \int\limits_{-\infty}^{+\infty} f_{X, Y}\left(x', y'\right) \dd x' \dd y'$
 			\2 $P\left(x_{1} < X \leq x_{2}, y_{1} < Y\leq y_{2}\right) = \int\limits_{y_{1}}^{y_{2}} \int\limits_{x_{1}}^{x_{2}} f_{X, Y}\left(x', y'\right) \dd x' \dd y'$
-			\2 $f_{X}\left(x\right) = \int\limits_{-\infty}^{+\infty} f_{X, Y}\left(x', y'\right) \dd y' = \diff{F_{X}\left(x\right)}{x}$
-			\2 $f_{Y}\left(x\right) = \int\limits_{-\infty}^{+\infty} f_{X, Y}\left(x', y'\right) \dd x' = \diff{F_{Y}\left(y\right)}{y}$
+			\2 marginal distribution of $X: f_{X}\left(x\right) = \int\limits_{-\infty}^{+\infty} f_{X, Y}\left(x', y'\right) \dd y' = \diff{F_{X}\left(x\right)}{x}$
+			\2 marginal distribution of $Y: f_{Y}\left(y\right) = \int\limits_{-\infty}^{+\infty} f_{X, Y}\left(x', y'\right) \dd x' = \diff{F_{Y}\left(y\right)}{y}$
+			\2 $X$ and $Y$ are statistically independent if $f_{X, Y}\left(x, y\right) = f_{X}\left(x\right)f_{Y}\left(y\right)$
+		\1 Conditional distribution:
+			\2 $f_{X, Y}\left(y | x\right) = \frac{f_{X, Y}\left(x, y\right)}{f_{X}\left(x\right)}$
+			\2 $f_{X, Y}\left(x | y\right) = \frac{f_{X, Y}\left(x, y\right)}{f_{Y}\left(y\right)}$	
 		\1 Independence: Two events $\{X = x\}$ and $A$ are independent if $\bvec{P}\left(X = x \text{ and } A\right) = \bvec{P}\left(X = x\right)\bvec{P}\left(A\right) = p_{X}\left(x\right)\bvec{P}\left(A\right)$	
 			\2 if $P\left(A\right) > 0$, then $p_{X | A}\left(x\right) = p_{X}\left(x\right)$
 		\1 Joint moment about the origin:
@@ -297,6 +192,66 @@
 		\1 Joint Central moments: $\mu_{n, k} = E\left[\left(X - \overline{X}\right)^{n} \left(Y - \overline{Y}\right)^{k} \right]$	
 			\2 Covariance: $C_{XY} = \mu_{1, 1} = E\left[\left(X - \overline{X}\right) \left(Y - \overline{Y}\right) \right] = R_{XY} - E\left[X\right]E\left[Y\right]$
 			\2 Normalized covariance: $\rho_{XY} = \frac{C_{XY}}{\sigma_{X}\sigma_{Y}} = \frac{R_{XY} - E\left[X\right]E\left[Y\right]}{\sigma_{X}\sigma_{Y}}$
+		
+	\end{outline}
+
+	\section{Functions of Random Variables}
+	\subsection{Transformation of RV}
+	\begin{outline}[enumerate]
+		\1 Suppose $X$ is a discrete RV with probability distribution $f\left(x\right)$. Let $Y = g\left(X\right)$ be a one-to-one transformation such that $x = h\left(y\right)$. The probability distribution of $Y$ is
+			\begin{equation}
+				f_{Y}\left(y\right) = f\left[h\left(y\right)\right]		
+			\end{equation}
+		\1 the process for joint probability is the same (but you hve two substitutions)
+		\1 Suppose $X$ is a continuous RV with probability distribution $f_{X}\left(x\right)$. Let $Y = g\left(X\right)$ be a one-to-one transformation such that $x = h\left(y\right)$. The probability distribution of $Y$ is 
+			\begin{equation}
+				f_{Y}\left(y\right) = f\left[h\left(y\right)\right]\lvert J\rvert	
+			\end{equation}
+		where $J = \diff{h}{y}$	and is called the Jacobian of the transformation
+		\1 for joint probability, the Jacobian is $J = \det\begin{bmatrix}
+		\diffp{x_{1}}{{y_{1}}} & \diffp{x_{1}}{{y_{2}}} \\ 
+		\diffp{x_{2}}{{y_{1}}} & \diffp{x_{2}}{{y_{2}}}
+		\end{bmatrix}$
+	\end{outline}
+	\subsection{Linear Combination of RV}
+	\begin{outline}[enumerate]
+		\1 Suppose $Z = X + Y$ where $X$ and $Y$ are independent
+			\2 Discrete case:
+				\3 $P\left(Z = z\right) = \sum\limits_{k = -\infty}^{+\infty} P\left(X = k\right) P\left(Y = z - k\right)$
+			\2 Continuous case:	
+				\3 cumulative function is $F_{Z}\left(z\right) = P\left(Z \leq z\right) = P\left(X + Y \leq z\right) = \int\limits_{R} f_{X, Y}\left(x, y\right) \dd x \dd y$
+				\3 probability distribution function: $f_{Z}\left(z\right) = \int\limits_{-\infty}^{+\infty} f_{Y}\left(z - x\right)f_{X}\left(x\right) \dd x \equiv f_{Y}\left(y\right) * f_{X}\left(x\right)$
+	\end{outline}
+
+	\section{Central Limit Theorem}
+	\begin{outline}[enumerate]
+		\1 Population: totality of concerned observations
+		\1 Sample: subset of the population
+			\2 Sample mean: $\overline{X} = \frac{1}{n}\sum_{i = 1}^{n} X_{i}$	
+			\2 Sample median: $\tilde{x} = \left\{\begin{array}{ll}
+				x_{\left(n + 1\right)/2}, & \text{if $n$ is odd} \\
+				\frac{1}{2}\left(x_{n/2} + x_{\left(n + 2\right)/2}\right), & \text{if $n$ is even}
+			\end{array} \right.$ 
+			\2 Sample mode: most frequent
+			\2 Sample variance: $S^2 = \frac{1}{n - 1}\sum_{i = 1}^{n} \left(X_{i} - \overline{X}\right)^{2} = \frac{1}{n\left(n - 1\right)} \left[n\sum_{i = 1}^{n}X_{i}^{2} - \left(\sum_{i = 1}^{n} X_{i}\right)^2\right]$
+			\2 Sample standard deviation: $S = \sqrt{S}$
+			\2 Sample range: $R = X_{\text{max}} - X_{\text{min}}$
+		\1 Central Limit Theorem: If $\overline{X}$ is the mean of a random sample of size $n$ taked from a population with mean $\mu$ and finite variance $\sigma^{2}$, then the limiting form of the distribution of 
+		\begin{equation}
+			Z = \frac{\overline{X} - \mu}{\sigma / \sqrt{n}}
+		\end{equation}	
+		as $n \to \infty$ is the standard normal distribution $n\left(z; 0, 1\right)$
+		\1 Consequences:
+			\2 let $\overline{X} = \frac{1}{n}\sum_{i = 1}^{x} X_{i}$ and $S_{n} = \sum_{i = 1}^{x} X_{i}$
+			\2 $\overline{X}$ and $S_{n}$ have approximately normal distribution
+			\2 $\sigma_{\overline{X}}^{2} = \sigma^{2}/n$
+			\2 $\mu_{\overline{X}} = \mu$
+			\2 $\mu_{s} = n\mu$
+			\2 $\sigma_{S}^{2} = n\sigma^2$
+		\1 for two independent samples of size $n_{1}$ and $n_{2}$:
+		\begin{equation}
+			Z = \frac{\left(\overline{X}_{1} - \overline{X}_{2}\right) - \left(\mu_{1} - \mu_{2}\right)}{\sqrt{\left(\sigma_{1}^{2} / n_{1}\right)^{2} + \left(\sigma_{2}^{2} / n_{2}\right)^{2}}}
+		\end{equation}	
 	\end{outline}
 	
 \end{document}
