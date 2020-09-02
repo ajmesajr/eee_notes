@@ -1,20 +1,16 @@
-
-
 \documentclass[a4paper,11pt]{article}
 \usepackage{ajmesa}
-\usepackage[top = 1in, bottom = 1in, left = 0.5in, right = 0.5in]{geometry}
+\usepackage[top = 1in, bottom = 0.5in, left = 0.5in, right = 0.5in]{geometry}
 
 \pagestyle{fancy}
 \fancyhf{}
-%\rhead{Math 40 - WFY | Julius Basilla}
-%\chead{2019-04243}
+%\rhead{}
+%\chead{}
 \lhead{EEE 137 Key concepts and equations}
 \cfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
 
 \title{\textbf{EEE 137 Key concepts and Equations}}
 \author{AJ Mesa Jr.}
-
-\bibliography{137_references}
 
 \begin{document}
 	\maketitle
@@ -253,5 +249,62 @@
 			Z = \frac{\left(\overline{X}_{1} - \overline{X}_{2}\right) - \left(\mu_{1} - \mu_{2}\right)}{\sqrt{\left(\sigma_{1}^{2} / n_{1}\right)^{2} + \left(\sigma_{2}^{2} / n_{2}\right)^{2}}}
 		\end{equation}	
 	\end{outline}
-	
+
+	\section{Random Process}
+	\begin{outline}[enumerate]
+		\1 a random (stochastic) process assigns a time function $X\left(t, s\right)$ for every outcome $s$
+		\1 for a fixed $s$, the graph of $X\left( t, s \right)$ is a realization, sample path, or sample function of the random process
+		\1 $k$th order distribution function of time samples: 
+		\begin{equation}
+			F_{X} \left( x_{1}, x_{2}, \ldots, x_{k}; t_{1}, t_{2}, \ldots, t_{k}\right) = P\left\{ X\left(t_{1}\right) \leq x_{1}, X\left(t_{2}\right) \leq x_{2}, \ldots, X\left(t_{k}\right) \leq x_{k} \right\}	
+		\end{equation}	
+		\1 for $k$ RVs, the joint density function is:
+		\begin{equation}
+			f_{X} \left( x_{1}, x_{2}, \ldots, x_{k}; t_{1}, t_{2}, \ldots, t_{k}\right) = \frac{\partial^k\left( x_{1}, x_{2}, \ldots, x_{k}; t_{1}, t_{2}, \ldots, t_{k}\right)} {\partial{x_{1}}\partial{x_{2}}\ldots\partial{x_{k}}}
+		\end{equation}
+		\1 Univariate central moment: $\overline{X} = E\left[X\left(t, s\right) \right] = \int\limits_{-\infty}^{+\infty} X\left(t, s\right)f_{s}\left(s\right) \dd s$ 
+		\1 Variance: $VAR = E\left[\left(X - \overline{X }\right)^{2}\right] = \int\limits_{-\infty}^{+\infty} \left(X - \overline{X}\right)^{2} f_{s}\left(s\right) \dd s$
+		\1 For independent vectors of RV: the joint density is the product of the individual density functions of each vector
+		\1 Autocorrelation: 
+		\begin{equation}
+			R_{XX}\left(t_{1}, t_{2}\right) \equiv E\left[X\left(t_{1}\right) X \left(t_{2}\right) \right] = \int\limits_{-\infty}^{+\infty} \int\limits_{-\infty}^{+\infty} x_{1} x_{2} f_{x\left(t_{1}\right) x\left(t_{2}\right)} \left(x_{1}, x_{2}\right) \dd x_{1} \dd x_{2}
+		\end{equation}
+		\1 Autocovariance:
+		\begin{align*}
+			C_{XX} \left(t_{1}, t_{2}\right) &\equiv E\left\{ \left[X\left(t_{1} - \mu_{x}\left(t_1\right) \right) \right] \left[X\left(t_{2} - \mu_{x}\left(t_2\right) \right) \right] \right\} \\
+			&= R_{XX}\left(t_{1}, t_{2}\right) - \mu_{x}\left(t_1\right)\mu_{x}\left(t_2\right)
+		\end{align*}
+	 	\1 Variance: $VAR = C_{XX}\left(t, t\right)$
+	 	\1 Correlation coefficient: 
+ 		\begin{equation}
+ 			\rho_{XX} \left(t_{1}, t_{2}\right) = \frac{C_{XX} \left(t_{1}, t_{2}\right)}{\sqrt{C_{XX} \left(t_{1}, t_{1}\right)}\sqrt{C_{XX} \left(t_{2}, t_{2}\right)}}
+ 		\end{equation}
+ 	 	\1 Cross-correlation: $R_{XY} \left(t_{1}, t_{2}\right) = E\left[X\left(t_{1}\right) Y\left(t_{2}\right)\right]$
+ 	 		\2 product of two expectations if $X$ and $Y$ are statistically independent	
+	\end{outline}
+	\subsection{Stationary Random Processes}
+	\begin{outline}[enumerate]
+		\1 Definition: if the distribution is independent of the time origin
+		\1 Wide-sense Stationary Process (WSS) satisfies the following:
+			\2 $E \left[ X \left( t \right) \right] = \overline{X}$
+			\2 $E \left[ X \left( t \right) X \left( t + \tau \right) \right]$ is a function of $\tau$ only 
+		\1 Jointly WSS: both satisfy the above condition and $E\left[X\left(t\right) Y\left(t + \tau \right) \right]$ is a function of $\tau$ only	the correlation of WSS and jointly WSS are also functions of $\tau$ only
+		\1 Properties of WSS:
+			\2 $\lvert R_{XX}\left( \tau \right) \rvert \leq R_{XX} \left( 0 \right)$
+			\2 $R_{XX}\left( \tau \right) = R_{XX}\left( -\tau \right)$
+			\2 $R_{XX}\left( 0 \right) = E\left[\left(X\left(t\right)\right)^2\right]$
+			\2 $\lim_{\lvert \tau \rvert \to \infty} R_{XX}\left( \tau \right) = \overline{X}^2$ if $\overline{X} \neq 0$ and $X\left(t\right)$ has no periodic part
+			\2 if $X\left(t\right)$ has periodic component, then $R_{XX}\left( \tau \right)$ will have a periodic component with the same period
+			\2 if $X\left(t\right)$ is ergodic, zero-mean and has no periodic component, the $\lim_{\lvert \tau \rvert \to \infty} R_{XX}\left( \tau \right) = 0$
+			\2 $R_{XX}\left( \tau \right)$ can't have an arbitrary shape
+		\1 time average:
+		\begin{equation}
+			A\left[ x\left(t\right) \right] = \lim_{T \to \infty} \frac{1}{2T} \int\limits_{-T}^{T}x\left(t\right) \dd t
+		\end{equation}	
+		\1 time autocorrelation: $\mathfrak{R}_{XX}\left(\tau\right) = A\left[x\left(t\right) x \left(t + \tau\right) \right]$
+		\1 Ergodicity: must satisfy the following conditions
+			\2 $E\left[x\right] = A\left[x\left(t\right)\right]$
+			\2 $\mathfrak{R}_{XX}\left(\tau\right) = T_{XX}\left(\tau\right)$
+	\end{outline}
+
 \end{document}
