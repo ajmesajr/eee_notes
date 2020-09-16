@@ -1,6 +1,6 @@
-%ver 1 of my own sty file 
+%ver 2 of my own sty file 
 %Allan J. Mesa Jr.
-%31 Aug 2020
+%16 Sept 2020
 
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{ajmesa}[2020/09/01 ajmesajr package]
@@ -115,12 +115,31 @@
 	\array{#1}}
 \makeatother
 
+
+%some trig functions
+\newcommand{\atanh}[1]{\tanh^{-1}\left(#1\right)}
+\newcommand{\asinh}[1]{\sinh^{-1}\left(#1\right)}
+\newcommand{\acosh}[1]{\cosh^{-1}\left(#1\right)}
+\newcommand{\acoth}[1]{\coth^{-1}\left(#1\right)}
+\newcommand{\asech}[1]{\sech^{-1}\left(#1\right)}
+\newcommand{\acsch}[1]{\csch^{-1}\left(#1\right)}
+
+\newcommand{\atan}[1]{\tan^{-1}\left(#1\right)}
+\newcommand{\asin}[1]{\sin^{-1}\left(#1\right)}
+\newcommand{\acos}[1]{\cos^{-1}\left(#1\right)}
+\newcommand{\acot}[1]{\cot^{-1}\left(#1\right)}
+\newcommand{\asec}[1]{\sec^{-1}\left(#1\right)}
+\newcommand{\acsc}[1]{\csc^{-1}\left(#1\right)}
+
+%vector calculus shortcuts
 \newcommand{\grad}{\nabla}
 \newcommand{\divr}{\nabla \cdot}
 \newcommand{\curl}{\nabla \times}
 \newcommand{\bvec}[1]{\mathbf{#1}}
 \newcommand{\bhat}[1]{\hat{\mathbf{#1}}}
 \newcommand{\uvec}[1]{\hat{\mathbf{a}}_{#1}}
+
+\newcolumntype{L}{>{$}c<{$}} % math-mode version of "l" column type
 
 \ProcessOptions\relax
 
