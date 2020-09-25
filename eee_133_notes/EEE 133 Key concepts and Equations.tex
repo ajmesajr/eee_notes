@@ -177,29 +177,7 @@
 	\end{center}
 	Typical time constant for RL is in ms, for RC in $\mu$s. For general RL and RC circuits, find the equivalent resistance as seen by the inductor/capacitor. 
 	
-	\subsection{Application of Laplace Transform}
-	\subsubsection{Method 1}
-	\begin{enumerate}
-		\item Write the differential equations for the unknown function $x(t)$
-		\item Apply Laplace transform on the equation
-		\item Use algebraic manipulation for $X(s)$ 
-		\item Apply inverse Laplace transform to get $x(t)$
-	\end{enumerate}
-
-	\subsubsection{Method 2}
-	\begin{enumerate}
-		\item Apply Laplace transform on each element
-		\item Use DC circuit analysis techniques to write the $s$-domain equations involving $X(s)$
-		\item Apply inverse Laplance transform to get $x(t)$
-	\end{enumerate}
 	
-	\textbf{Examples}
-	\begin{enumerate}
-		\item Resistors: $v = iR \Longleftrightarrow V = IR$, where $V = \mathcal{L}\{v\},~I = \mathcal{L}\{i\}$
-		\item Inductors: $v = L\diff{i}{t} \Longleftrightarrow V = L\left[sI - i(0^-)\right] = sLI - LI_0$
-		\item Capacitors: $i = C\diff{v}{t} \Longleftrightarrow I = C\left[sV - v(0^-)\right] = sCV - CV_0$ 
-	\end{enumerate}
-
 	\section{First order Forced Response}
 	Consider a series RL circuit with voltage $v(t) = V_0u(t)$. We have the following KVL equation of current
 	\begin{align*}
@@ -241,13 +219,213 @@
 	\begin{tabular}{|l|l|l|l|}
 		\hline
 		Condition & Output & Condition & Output \\ \hline
-		PW $\gg \tau$ & time enough to fully charge & T - W $\gg \tau$ & time enough to fully discharge \\ \hline
-		PW $\ll \tau$ & time NOT enough to fully charge & T - W $\ll \tau$ & time NOT enough to fully discharge \\ \hline
+		PW $\gg \tau$ & time enough to fully charge & T - PW $\gg \tau$ & time enough to fully discharge \\ \hline
+		PW $\ll \tau$ & time NOT enough to fully charge & T - PW $\ll \tau$ & time NOT enough to fully discharge \\ \hline
+	\end{tabular}
+	\end{center}
+	
+	\subsection{RC Oscillator}
+	\begin{outline}[enumerate]
+		\1 For a low pass $RC$ circuit, the output (voltage at capacitor) is simply the input for low frequencies
+			\2 at $\omega = 0$, $v_o = v_i$ 
+			\2 at $\omega \to \infty$, $v_o \to 0$
+		\begin{figure}[h]
+			\centering
+			\begin{circuitikz}[american]
+				\draw (0,0) node[circ] {} to[R, l_ = $R$] (2,0) node[circ]{}
+				(2,0) to[C, l_ = $C$] (2, -2) node[circ]{} node[ground]{}
+				(2,0) -- (4,0) node[ocirc] {}
+				(2,-2) -- (4,-2) node[ocirc] {}
+				(0,-2) -- (4,-2)
+				(4,0) node[circ]{} to[open, v = $v_o(t)$] (4,-2) node[circ]{}
+				(0,0) to[open, v = $v_i(t)$] (0, -2) node[circ]{}
+				;		
+			\end{circuitikz}
+			\caption{Low Pass Circuit}
+		\end{figure}
+	
+	
+		\1 Schmitt Trigger $RC$ 
+		\begin{figure}[h]
+			\centering
+			\begin{circuitikz}[american]
+				\draw (0, 0) node[nand port] (nand) {} 
+				(nand.in 1) node[circ, label = {above:1}] {} -| ++(-1, 1) node[vcc] (vcc) {$5V$}
+				(nand.in 2) node[circ, label = {above:2}] {} -- ++(-1,0) coordinate(A) -- ++(-1,0) coordinate(B)  node[circ] {}
+				(B) to [C, l_ = \mbox{$C_1 = 100 pF$}] ++(0,-2) node[ground] {}
+				(A) node[circ] {} |- ++(0.5,-1) to[R, l_ = \mbox{$R_{2} = 5.1k\Omega$}] ++(2,0) to[R, l_ = \mbox{$R_{1} = 10k\Omega$}] ++(2,0) coordinate(C)
+				(nand.out) -| (C) node[circ] {} -- ++(0,-1)
+				(B) to[short] ++(0,2) node[circ, label = {above:Ant}] {}
+				;
+			\end{circuitikz}
+		\end{figure}
+			\2 $V_p = 2.9 V \approx 3.0V, V_n = 1.9 V \approx 2.0V$
+			\2 As the voltage on $C_1$ reaches $V_p$, the output will become voltage low. Then the voltage across the capacitor decays
+			\2 When the voltage across $C_1$ decays to $V_n$, output will become voltage high. Then the voltage across the capacitor increases 
+			\2 The behavior oscillates. 
+			\2 the voltage across the charging capacitor is 
+			\begin{align*}
+				v &= V_{cc}\left[ 1 - \exp\left( -\frac{t}{\tau} \right) \right]
+			\end{align*}
+			\2 the time to charge to $V_p$ is 
+			\begin{align*}
+				t_{1} &= -\tau \ln \left(1 - \frac{V_p}{V_{cc}}\right)
+			\end{align*}
+			\2 the voltage across the discharging capacitor is 
+			\begin{align*}
+				v &= V_{p} \exp\left( -\frac{t}{\tau} \right)
+			\end{align*}
+			\2 the time to discharge to $V_n$ is 
+			\begin{align*}
+				t_{2} &= -\tau \ln \left(\frac{V_n}{V_{p}}\right)
+			\end{align*}
+			\2 the voltage across the charging capacitor from $V_n$ to $V_p$ is 
+			\begin{align*}
+				v &= V_{cc} - (V_{cc} - V_{n})\exp\left( -\frac{t}{\tau} \right) 
+			\end{align*}
+			\2 the time to charge to from $V_n$ to $V_p$ is
+			\begin{align*}
+				t_{3} &= -\tau \ln \left(\frac{V_{cc} - V_p}{V_{cc} - V_{n}}\right)
+			\end{align*}
+			
+		\1 For a high pass $RC$ circuit, the output (voltage at capacitor) is simply the input for high frequencies
+		\2 at $\omega = 0$, $v_o = 0$ 
+		\2 at $\omega \to \infty$, $v_o \to v_{i}$
+		\begin{figure}[h]
+			\centering
+			\begin{circuitikz}[american]
+				\draw (0,0) node[circ] {} to[C, l_ = $C$] (2,0) node[circ]{}
+				(2,0) to[R, l_ = $R$] (2, -2) node[circ]{} node[ground]{}
+				(2,0) -- (4,0) node[ocirc] {}
+				(2,-2) -- (4,-2) node[ocirc] {}
+				(0,-2) -- (4,-2)
+				(4,0) to[open, v = $v_o(t)$] (4,-2) 
+				(0,0) to[open, v = $v_i(t)$] (0, -2) node[circ]{}
+				;		
+			\end{circuitikz}
+			\caption{High Pass Circuit}
+		\end{figure}
+	\end{outline}
+	
+	\section{Diode and Transistor Switching: Half Wave Rectifier}
+	\begin{outline}[enumerate]
+		\1 The half wave rectifier has the following circuit
+			\begin{figure}[H]
+				\centering
+				\begin{circuitikz}[american]
+					\draw (0,0) node[circ] {} to[D, l_ = $D$] (2,0) node[circ]{}
+					(2,0) to[R, l_ = $R$] (2, -2) node[circ]{} node[ground]{}
+					(2,0) -- (4,0) node[ocirc] {}
+					(2,-2) -- (4,-2) node[ocirc] {}
+					(4,0) to[open, v = $v_o(t)$] (4,-2) 
+					(0,0) to[sV, v_ = $v_i(t)$] (0, -2) 
+					(0,-2) -- (2,-2)
+					;		
+				\end{circuitikz}
+				\caption{Half Wave Rectifier}
+			\end{figure}
+			\2 the diode is open only when $v_i(t) > v_\text{on}$, hence only the positive voltage are seen by $v_o(t)$
+				\3 Average Value $\frac{V_\text{m}}{\pi}$
+				\3 $V_\text{rms} = \frac{V_\text{m}}{2}$
+				\3 $I_\text{m} = \frac{V_\text{m}}{R_\text{L}}$
+				\3 Ripple Factor $\frac{I_\text{rms}}{I_\text{DC}}$
+				\3 Efficiency $e = \frac{\text{DC Output Power}}{\text{AC Output Power}}$
+			\2 a smoothing capacitor is added (capacitor filter) so that the output waveform does not have a $0$ value: 
+			\begin{figure}[H]
+				\centering
+				\begin{circuitikz}[american]
+					\draw (0,0) node[circ] {} to[D, l_ = $D$] (2,0) node[circ]{}
+					(2,0) to[R, l_ = $R$] (2, -2) node[circ]{} node[ground]{}
+					(2,0) -- (4,0) node[circ]{} to[C, l_ = $C$] (4,-2) node[circ]{}
+					(4,0) -- (6,0) node[ocirc] {}
+					(4,-2) -- (6,-2) node[ocirc] {}
+					(6,0) to[open, v = $v_o(t)$] (6,-2) 
+					(0,0) to[sV, v_ = $v_i(t)$] (0, -2) 
+					(0,-2) -- (6,-2)
+					;		
+				\end{circuitikz}
+				\caption{Half Wave Rectifier with Capacitor Filter}
+			\end{figure}
+				\3 $C$ is chosen such that $RC \gg T$ so the exponential seems linear
+	\end{outline}
+
+	\section{LC Oscillations}
+	\begin{figure}[H]
+		\centering
+		\begin{circuitikz}[american]
+			\draw (0,-2) to[L, l_ = $L$, xscale=-1] (0,0) 
+			(0,-2) -- (2,-2)
+			(2,-2) to[C, l_=$C$] (2,0)
+			(2,0) to[short, i_ = $i$] (0,0)
+			(1,0) to[open, v = $v$] (1,-2) node[circ]{} node[ground]{}
+			;		
+		\end{circuitikz}
+		\caption{LC Oscillator}
+	\end{figure}	
+	\begin{outline}[enumerate]
+		\1 most of the time, either $v(0)$ or $i(0)$ are given. 
+		\1 by conservation of energy: $\frac{1}{2}Li^2 = \frac{1}{2}Cv^2$
+		\1 the differential equations are $v = L\diff{i}{t}$ and $i = -C\diff{v}{t} \implies i = \frac{1}{LC}\diff[2]{i}{t}$
+		\1 we have $\omega = \frac{1}{\sqrt{LC}}$
+		\1 the solutions have the form 
+			\begin{align*}
+				i &= I_0\cos\left(\frac{t}{\sqrt{LC}} + \phi \right) \\
+				v &= -I_0\sqrt{\frac{L}{C}}\sin\left(\frac{t}{\sqrt{LC}} + \phi \right)
+			\end{align*} 
+			or 
+			\begin{align*}
+				v &= V_0\cos\left(\frac{t}{\sqrt{LC}} + \phi \right) \\
+				i &= -V_0\sqrt{\frac{C}L{}}\sin\left(\frac{t}{\sqrt{LC}} + \phi \right)
+			\end{align*} 
+	\end{outline}
+	
+	
+	\section{Source-free RLC Circuits}
+	\begin{center}
+	\begin{tabular}{|l|c|c|c|c|}
+		\hline
+		& Characteristic Equation & Neper Frequency $(\alpha)$ & Resonant Frequency $(\omega_0)$ & Damping Factor $(\zeta)$\\ \hline
+		Series & $s^2 + \left(\frac{R}{L}\right)s + \frac{1}{LC} = 0$ & $\alpha = \frac{R}{2L}$ & $\omega_0 = \frac{1}{\sqrt{LC}}$ & $\zeta = \frac{R}{2}\sqrt{\frac{C}{L}}$ \\ \hline
+		Parallel & $s^2 + \left(\frac{1}{RC}\right)s + \frac{1}{LC} = 0$ & $\alpha = \frac{1}{2RC}$ & $\omega_0 = \frac{1}{\sqrt{LC}}$ & $\zeta = \frac{1}{2R}\sqrt{\frac{L}{C}}$ \\ \hline
+	\end{tabular}
+
+	\vspace{10mm}
+
+	\begin{tabular}{|l|c|l|}
+		\hline
+		Case & Condition & Characteristic \\ \hline
+		Overdamped & $\zeta > 1$ & Does not oscillate about the steady state value but takes time \\ \hline
+		Underdamped & $\zeta < 1$ & Oscillation with decay envelope  \\ \hline 
+		Critacally damped & $\zeta = 1$ & Decays fastes to steady state without oscillation \\ \hline
 	\end{tabular}
 	\end{center}
 
-	\subsection{Laplace Transform Applications}
-	\subsubsection{$v(t) = V_0u(t)$}
+
+
+	\section{Laplace Transform Applications}
+	\subsection{Method 1}
+	\begin{enumerate}
+		\item Write the differential equations for the unknown function $x(t)$
+		\item Apply Laplace transform on the equation
+		\item Use algebraic manipulation for $X(s)$ 
+		\item Apply inverse Laplace transform to get $x(t)$
+	\end{enumerate}
+	
+	\subsection{Method 2}
+	\begin{enumerate}
+		\item Apply Laplace transform on each element
+		\item Use DC circuit analysis techniques to write the $s$-domain equations involving $X(s)$
+		\item Apply inverse Laplace transform to get $x(t)$
+	\end{enumerate}
+	
+	\textbf{Examples}
+	\begin{enumerate}
+		\item Resistors: $v = iR \Longleftrightarrow V = IR$, where $V = \mathcal{L}\{v\},~I = \mathcal{L}\{i\}$
+		\item Inductors: $v = L\diff{i}{t} \Longleftrightarrow V = L\left[sI - i(0^-)\right] = sLI - LI_0$
+		\item Capacitors: $i = C\diff{v}{t} \Longleftrightarrow I = C\left[sV - v(0^-)\right] = sCV - CV_0$ 
+	\end{enumerate}
+	
+	\subsection{$v(t) = V_0u(t)$}
 	\begin{enumerate}
 		\item Find the equivalent circuit using the Laplace equivalent of the circuit
 		\item Solve for $V(s)$. May involve partial fraction decomposition. \href{https://cnx.org/exports/b2e3f8ad-9e60-4421-a343-97e64192ffce\%4015.pdf/partial-fraction-expansion-15.pdf}{This} is a nice guide
