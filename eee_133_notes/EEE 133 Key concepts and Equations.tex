@@ -384,25 +384,138 @@
 	\begin{center}
 	\begin{tabular}{|l|c|c|c|c|}
 		\hline
-		& Characteristic Equation & Neper Frequency $(\alpha)$ & Resonant Frequency $(\omega_0)$ & Damping Factor $(\zeta)$\\ \hline
-		Series & $s^2 + \left(\frac{R}{L}\right)s + \frac{1}{LC} = 0$ & $\alpha = \frac{R}{2L}$ & $\omega_0 = \frac{1}{\sqrt{LC}}$ & $\zeta = \frac{R}{2}\sqrt{\frac{C}{L}}$ \\ \hline
-		Parallel & $s^2 + \left(\frac{1}{RC}\right)s + \frac{1}{LC} = 0$ & $\alpha = \frac{1}{2RC}$ & $\omega_0 = \frac{1}{\sqrt{LC}}$ & $\zeta = \frac{1}{2R}\sqrt{\frac{L}{C}}$ \\ \hline
+		& Characteristic Equation & $(\alpha)$ & $(\omega_0)$ & Damping Factor $(\zeta)$\\ \hline
+		Series $i(t)$ & $s^2 + \left(\frac{R}{L}\right)s + \frac{1}{LC} = 0$ & $\alpha = \frac{R}{2L}$ & $\omega_0 = \frac{1}{\sqrt{LC}}$ & $\zeta = \frac{R}{2}\sqrt{\frac{C}{L}}$ \\ \hline
+		Parallel $v(t)$ & $s^2 + \left(\frac{1}{RC}\right)s + \frac{1}{LC} = 0$ & $\alpha = \frac{1}{2RC}$ & $\omega_0 = \frac{1}{\sqrt{LC}}$ & $\zeta = \frac{1}{2R}\sqrt{\frac{L}{C}}$ \\ \hline
 	\end{tabular}
 
-	\vspace{10mm}
+	\begin{align}
+		s_{1,~2} = -\alpha \pm \sqrt{\alpha^2 - \omega_0^2}
+	\end{align}
 
-	\begin{tabular}{|l|c|l|}
+	\begin{tabular}{|l|c|l|l|}
 		\hline
-		Case & Condition & Characteristic \\ \hline
-		Overdamped & $\zeta > 1$ & Does not oscillate about the steady state value but takes time \\ \hline
-		Underdamped & $\zeta < 1$ & Oscillation with decay envelope  \\ \hline 
-		Critacally damped & $\zeta = 1$ & Decays fastes to steady state without oscillation \\ \hline
+		Case & Condition & Characteristic & Roots \\ \hline
+		Overdamped & $\zeta > 1$ & Does not oscillate about the steady state value & Real, Distinct \\ \hline
+		Underdamped & $\zeta < 1$ & Oscillation with decay envelope & Complex \\ \hline 
+		Critacally damped & $\zeta = 1$ & Decays fastest to steady state without oscillation & Real, equal \\ \hline
 	\end{tabular}
 	\end{center}
 
+	\section{Resonance}
+	\begin{outline}[enumerate]
+		\1 resonance - the fixed amplitude forcing function produces a response of maximum amplitude
+		\1 Series Resonant Conditions:
+			\2 $\omega_0 = \frac{1}{\sqrt{LC}}$
+			\2 $Z_{in} = R$
+			\2 voltage and current of source in phase 
+			\2 current magnitude is maximum 
+			\2 electric filter 
+			\2 the half-power-point frequency is where the power is half: 
+				\begin{equation}
+					\omega_{1,~2} = \mp \frac{R}{2L} + \sqrt{\left( \frac{R}{2L} \right)^2 + \frac{1}{LC} }
+				\end{equation}	
+			\2 bandwidth: $BW = \omega_2 - \omega_1 = \frac{R}{L}$
+			\2 Quality factor: $Q = \frac{\omega_0}{BW} = \frac{1}{R}\sqrt{\frac{L}{C}}$
+			\2 $\omega_0^2 = \omega_1\omega_2$
+		\1 Parallel Resonant Conditions:
+			\2 $\omega_0 = \frac{1}{\sqrt{LC}}$
+			\2 $Y_{in} = \frac{1}{R}$
+			\2 voltage and current of source in phase 
+			\2 voltage magnitude is maximum 
+			\2 electri c filter 
+			\2 the half-power-point frequency is where the power is half: 
+			\begin{equation}
+				\omega_{1,~2} = \mp \frac{1}{2RC} + \sqrt{\left( \frac{1}{2RC} \right)^2 + \frac{1}{LC} }
+			\end{equation}	
+			\2 bandwidth: $BW = \omega_2 - \omega_1 = \frac{1}{RC}$
+			\2 Quality factor: $Q = \frac{\omega_0}{BW} = R\sqrt{\frac{C}{L}}$
+			\2 $\omega_0^2 = \omega_1\omega_2$	
+		\1 Physical model: $R_1$ series to $L$, $C$ parallel to that series and to $R_2$
+			\2 $\omega_0 = \sqrt{\frac{1}{LC} - \left(\frac{R_1}{L} \right)^2 }$	
+	\end{outline}
 
+	\newpage
 
 	\section{Laplace Transform Applications}
+	Transform of circuit elements: \\
+	\begin{outline}[enumerate]
+	\1 Resistor:
+	\begin{figure}[!htb]
+		\centering
+		\begin{minipage}{.5\textwidth}
+			\centering 
+			\begin{circuitikz}[american]
+				\draw (0,0) node[ocirc] (pos) {}  to[R, v = $v(t)$, f = $i(t)$] (0,-2) node[ocirc] (neg) {} ;
+			\end{circuitikz}
+		\end{minipage}%
+		\begin{minipage}{0.5\textwidth}
+			\centering
+			\begin{circuitikz}[american]
+				\draw (0,0) node[ocirc] (pos) {}  to[R, v = $V(s)$, f = $I(s)$] (0,-2) node[ocirc] (neg) {} ;
+			\end{circuitikz}
+		\end{minipage}
+	\end{figure}
+
+	\1 Inductor:
+	\begin{figure}[!htb]
+		\centering
+		\begin{minipage}{.25\textwidth}
+			\centering 
+			\begin{circuitikz}[american]
+				\draw (0,0) node[ocirc] (pos) {} to[L, v = $v(t)$, f = $i(t)$] (0,-2) node[ocirc] (neg) {};
+			\end{circuitikz}
+		\end{minipage}%
+		\begin{minipage}{0.3\textwidth}
+			\centering
+			\begin{circuitikz}[american]
+				\draw (0,1.5) to[open, f = $I(s)$] (0,0.5) node[ocirc] (pos) {}  to[L, l = \mbox{$Z(s) = sL$}] (0,-2) to[V, l = $-Li(0^-)$] (0,-4) node[ocirc] (neg) {}
+				(-1,1.5) to[open, v = $V(s)$] (-1,-5);
+			\end{circuitikz}
+		\end{minipage}%
+		\begin{minipage}{0.45\textwidth}
+			\centering
+			\begin{circuitikz}[american]
+				\draw (0,-2) to[L, l_ = \mbox{$Y(s) = \frac{1}{sL}$}]  (0,0) 
+				(-1,0) to[open,  v^ = $V(s)$] (-1,-2)
+				(0,0) -- (3,0) to[I, l = $\frac{i(0^-)}{s}$] (3,-2) -- (0,-2)
+				(1.5, 1.5) to[open, f = $I(s)$] (1.5, 0.5) node[ocirc] (pos) {} to[short] (1.5,0)
+				(1.5, -2) to[short] (1.5,-2.5)  node[ocirc] (pos) {};
+			\end{circuitikz}
+		\end{minipage}
+	\end{figure}
+
+	\1 Capacitor:
+	\begin{figure}[!htb]
+		\centering
+		\begin{minipage}{.25\textwidth}
+			\centering 
+			\begin{circuitikz}[american]
+				\draw (0,0) node[ocirc] (pos) {} to[C, v = $v(t)$, f = $i(t)$] (0,-2) node[ocirc] (neg) {};
+			\end{circuitikz}
+		\end{minipage}%
+		\begin{minipage}{0.45\textwidth}
+			\centering
+			\begin{circuitikz}[american]
+				\draw (0,-2) to[C, l_ = \mbox{$Y(s) = sC$}]  (0,0) 
+				(-1,0) to[open,  v^ = $V(s)$] (-1,-2)
+				(0,0) -- (3,0) to[I, l = $Cv(0^-)$, invert] (3,-2) -- (0,-2)
+				(1.5, 1.5) to[open, f = $I(s)$] (1.5, 0.5) node[ocirc] (pos) {} to[short] (1.5,0)
+				(1.5, -2) to[short] (1.5,-2.5)  node[ocirc] (pos) {};
+			\end{circuitikz}
+		\end{minipage}%
+		\begin{minipage}{0.3\textwidth}
+			\centering
+			\begin{circuitikz}[american]
+				\draw (0,1.5) to[open, f = $I(s)$] (0,0.5) node[ocirc] (pos) {}  to[C, l = \mbox{$Z(s) = \frac{1}{sC}$}] (0,-2) to[V, l = $\frac{v(0^-)}{s}$] (0,-4) node[ocirc] (neg) {}
+				(-1,1.5) to[open, v = $V(s)$] (-1,-5);
+			\end{circuitikz}
+		\end{minipage}		
+	\end{figure}
+		
+	\end{outline}
+
+
 	\subsection{Method 1}
 	\begin{enumerate}
 		\item Write the differential equations for the unknown function $x(t)$
@@ -447,9 +560,11 @@
 	\subsubsection{$v(t) = V_0\cos(\omega t)$}
 	The response has the form $i(t) = I_1\cos(\omega t) + I_2\sin(\omega t)$. Exploit the transfer function of the circuit. 
 	
-	\section{Modeling of Electromechanical Systems}
-	\section{Second order Unforced Responses}
-	\section{Second order Forced Responses}
+	\section{Ramp and Sine Response}
+	\section{Second Order System}
+	\section{Transients in Power Systems}
+	\section{Switching Power Supply}
+	\section{Filter Design}
 	
 	
 \end{document}
