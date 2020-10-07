@@ -1,0 +1,295 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{ajmesa}
+\usepackage[top = 1in, left = 0.5in, right = 0.5in, bottom = 1in]{geometry}
+
+\pagestyle{fancy}
+\fancyhf{}
+%\rhead{Math 40 - WFY | Julius Basilla}
+%\chead{2019-04243}
+\lhead{EEE 133 Key concepts and equations}
+\cfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+
+\title{\textbf{EEE 133 Key concepts and Equations}}
+\author{AJ Mesa Jr.}
+
+\begin{document}
+	\maketitle
+	\section{Diode Models and Circuits}
+	\subsection{History of Electronics}
+	\begin{outline}[enumerate]
+		\1 1904: John Fleming invented vacuum tubes. First time electron flow is controlled in non-conducting medium
+			\2 if the cathode is heated, some electrons can escape 
+			\2 if a voltage is applied ($+$) on anode ($-$) on cathode, there will be current 
+		\1 1906: the grid was added to control the current between the anode and cathode
+			\2 vacuum tubes allowed the development of amplifiers, transmitters, receivers, signal processor
+		\1 1946: the ENIAC computer was completed. it could execute 5000 additions per second
+		\1 1947: invention of transistor by Shockley, Bardeen, Brattain at the Bell Labs
+			\2 they were point-contact transistors
+		\1 1948: Schockley invented the BJT. the BJT is monolithic (containted in a single semiconductor crystal)	
+		\1 1958: the first Integrated Circuits (IC) was invented by Jack Kilby of Texas Instruments (non-monolithic) 
+		\1 1959: the first monolithic IC was developed by Robert Noyce at Fairchild Semiconduction
+			\2 uses silicon instead of germanium
+			\2 2 interconnected BJT transistor
+			\2 $SiO_{2}$ insulator, $Al$ interconnection
+			\2 planar IC, 0.06 in diameter
+		\1 Bipolar ICs with BJT devices domidated until early 80s	
+			\2 S/M/L Scale Integration : 10, 100, 1000 transistors
+		\1 1959: MOS ICs started in the 60s after the MOS transistor was develpoed at Bell Labs
+			\2 easier to fabricate than bipolar 
+			\2 uses less power
+			\2 can fit more transistor in the same silicon area
+			\2 slower than bipolar IC
+			\2 less robust than bipolar IC
+		\1 MOS ICs
+			\2 early 70s: MOS technology improved in speed and reliability
+			\2 first microprocessor: Intel 4004 (1971)
+			\2 emergence of VLSI (>10000 trasistors)
+			\2 microprocessors evolved into microcontrollers (MCUs) ad system on a chip (SOCs)
+		\1 Moore's Law: the transistor density would double every two years
+	\end{outline}
+
+	\subsection{Piecewise Linear Diode Models}
+	\begin{outline}[enumerate]
+		\1 1st Approximation: (when $v_{s} \gg V_{T}$)
+			\2 Open when $v_{D} < 0$
+			\2 Short when $v_{D} \geq 0$
+		\1 2nd Approximation (when above condition not satisfied):
+			\2 Open when $v_{D} < V_{T}$
+			\2 Voltage of $V_{T}$ when $v_{D} \geq V_{T}$
+		\1 3rd Approximation (2nd with resistor $R$ in series)
+			\2 Open when $v_{D} < V_{T}$
+			\2 Voltage of $V_{T}$ in series with resistance $R$ when $v_{D} \geq V_{T}$	
+		\1 To determine diode state: 
+			\2 Assume it is conducting 	
+			\2 Check direction of current
+			\2 If current is from anode to cathode, the assumption is correct and equivalent circuit is valid
+			\2 Otherwise, diode should be open
+		\1 Another method:
+			\2 Replace diode with open circuit 
+			\2 Determine the voltage across the diode terminals ($+$) on anode, ($-$) on cathode
+			\2 If $v_{D}$ < the needed threshold, assumption is correct 
+			\2 Otherwise, diode should be replaced with the appropriate model
+	\end{outline}
+
+	\newpage
+	\subsection{Practical Diode Circuits}
+	\begin{outline}[enumerate]
+		\1 Half Wave Rectifier	
+		\begin{figure}[!htb]
+			\centering
+			\begin{circuitikz}[american, full diodes]
+				%\ctikzset{bipoles/length=1cm}
+				\draw (0,2) to[sV, v_ = $v_{IN}$] (0,0)
+				(0,2) to[D, l=$D$] (2,2) to [R, l_=$R$] (2,0) -- (0,0) -- (3,0) node[circ] () {} 
+				(2,2) -- (3,2) node[circ] () {} to [open, v=$v_{OUT}$] (3,0)
+				;
+			\end{circuitikz}
+			\caption{Half Wave Rectifier}
+		\end{figure}	
+		\2 When diode is IDEAL: \\
+			$v_{OUT} = \left\{ \begin{array}{ll} 0, & v_{IN} < 0 \\ v_{IN} & v_{IN} \geq 0 \end{array} \right.$
+		\2 When diode has constant voltage model: \\
+			$v_{OUT} = \left\{ \begin{array}{ll} 0, & v_{IN} < V_{T} \\ v_{IN} - V_{T} & v_{IN} \geq V_{T} \end{array} \right.$
+		\1 	Full Wave Rectifier ($v_{1} = v_{2}$)
+		\begin{figure}[!htb]
+			\centering
+			\begin{circuitikz}[american, full diodes]
+				%\ctikzset{bipoles/length=1cm}
+				\draw (0,2) to[sV, v_ = $v_{1}$] (0,0)
+				(0,2) to[D, l=$D_{1}$] (2,2) node[circ] () {} -- (3,2) to [R, l_=$R$] (3,0) -- (0,0) -- (4,0) node[circ] () {} 
+				(3,2) -- (4,2) node[circ] () {} to [open, v=$v_{OUT}$] (4,0)
+				(0,0) to[sV, v_ = $v_{2}$] (0,-2) to[D, l=$D_{2}$] (2,-2) to[crossing] (2,2)
+				;
+			\end{circuitikz}
+			\caption{Full Wave Rectifier}
+		\end{figure}	
+			\2 When diode is IDEAL: \\
+			$v_{OUT} = \left\vert v_{IN} \right\vert$
+			\2 When diode has constant voltage model: \\
+			$v_{OUT} = \left\{ \begin{array}{ll} v_{1} - V_{T}, & v_{1} > V_{T} \\ -v_{2} - V_{T}, & v_{2} < -V_{T} \\ 0 & \text{otherwise} \end{array} \right.$
+			\2 This requires a transformer with center-tapped secondary ($n_{1} : n_{2} = 1 : 2$)
+		
+		\newpage
+		\1 Full Wave Bridge Rectifier
+		\begin{figure}[!htb]
+			\centering
+			\begin{circuitikz}[american, full diodes]
+				\draw (0,3) to[sV, v_=$v_{IN}$] (0,0) 
+				(0,3)  -- (3,3) coordinate(top bridge)
+				(top bridge) to [D, l=$D_{2}$, *-*] ++(1.5,-1.5) coordinate(right bridge)
+				to [D, l=$D_{3}$, *-*, invert] ++(-1.5,-1.5) coordinate (bottom bridge)
+				to [D, l=$D_{4}$, *-*, invert] ++(-1.5,1.5) coordinate (left bridge)
+				to [D, l=$D_{1}$, *-*] (top bridge)
+				(right bridge) -- ++(1,0) coordinate(R+) to[R] ++(0,-2.5) -- ++(1,0) node[circ] () {} coordinate (-)
+				(R+) -- ++(1,0) node[circ] () {} to[open, v = $v_{OUT}$] (-) 
+				(0,0) to[crossing] (bottom bridge)
+				(1.5,1.5) -- (1.5,-1) -- (-)
+				;
+			\end{circuitikz}
+		\caption{Full Wave Bridge Rectifier}
+		\end{figure}
+			\2 When diode is IDEAL: \\
+			$v_{OUT} = \left\vert v_{IN} \right\vert$
+			\2 When diode has constant voltage model: \\
+			$v_{OUT} = \left\{ \begin{array}{ll} v_{1} - 2V_{T}, & v_{1} > 2V_{T} \\ -v_{2} - 2V_{T}, & v_{2} < -2V_{T} \\ 0 & \text{otherwise} \end{array} \right.$
+		
+		\1 Positive Clipper	
+		\begin{figure}[!htb]
+			\centering
+			\begin{circuitikz}[american, full diodes]
+				%\ctikzset{bipoles/length=1cm}
+				\draw (0,3) to[sV, v_ = $v_{IN}$] (0,0)
+				(0,3) to [R, l_=$R$] (2,3) to [D, l = $D$] (2,1.5) to [V, v_=$V_{X}$] (2,0) -- (0,0) -- (3,0) node[circ] () {} 
+				(2,3) -- (3,3) node[circ] () {} to [open, v=$v_{OUT}$] (3,0)
+				;
+			\end{circuitikz}
+			\caption{Positive Clipper}
+		\end{figure}	
+			\2 $v_{OUT} = \left\{ \begin{array}{ll} V_{X} + V_{T}, & v_{IN} - V_{X} > V_{T} \\ v_{IN}, & v_{IN} - V_{X} < V_{T}\end{array} \right.$
+			
+		\newpage	
+		\1 Negative Clipper	
+		\begin{figure}[!htb]
+			\centering
+			\begin{circuitikz}[american, full diodes]
+				%\ctikzset{bipoles/length=1cm}
+				\draw (0,3) to[sV, v_ = $v_{IN}$] (0,0)
+				(0,3) to [R, l_=$R$] (2,3) to [D, invert, l = $D$] (2,1.5) to [V, v_=$V_{Y}$,invert] (2,0) -- (0,0) -- (3,0) node[circ] () {} 
+				(2,3) -- (3,3) node[circ] () {} to [open, v=$v_{OUT}$] (3,0)
+				;
+			\end{circuitikz}
+			\caption{Negative Clipper}
+		\end{figure}	
+			\2 $v_{OUT} = \left\{ \begin{array}{ll} -\left( V_{Y} + V_{T} \right), & -V_{Y} - v_{IN} > V_{T} \\ v_{IN}, & -V_{Y} - v_{IN} < V_{T} \end{array} \right.$	
+		\1 The positive and negative clippers can be combined 
+		\begin{figure}[!htb]
+			\centering
+			\begin{circuitikz}[american, full diodes]
+				%\ctikzset{bipoles/length=1cm}
+				\draw (0,3) to[sV, v_ = $v_{IN}$] (0,0)
+				(0,3) to [R, l_=$R$] (2,3) to [D, l = $D_{1}$] (2,1.5) to [V, v_=$V_{X}$] (2,0) -- (0,0) -- (5,0) node[circ] () {} 
+				(4,3) to [D, invert, l = $D_{2}$] (4,1.5) to [V, v_=$V_{Y}$,invert] (4,0)
+				(2,3) -- (5,3) node[circ] () {} to [open, v=$v_{OUT}$] (5,0)
+				;
+			\end{circuitikz}
+			\caption{Positive and Negative Clipper}
+		\end{figure}	
+			\2 $v_{OUT} = \left\{ \begin{array}{ll} V_{X} + V_{T}, & v_{IN} - V_{X} > V_{T} \\ -\left( V_{Y} + V_{T} \right), & -V_{Y} - v_{IN} > V_{T} \\ v_{IN}, & \text{otherwise} \end{array} \right.$
+			
+		\1 Peak Detector	
+		\begin{figure}[!htb]
+			\centering
+			\begin{circuitikz}[american, full diodes]
+				%\ctikzset{bipoles/length=1cm}
+				\draw (0,2) to[sV, v_ = $v_{IN}$] (0,0)
+				(0,2) to[D, l=$D$] (2,2) to [cC, l_=$C$] (2,0) -- (0,0) -- (3,0) node[circ] () {} 
+				(2,2) -- (3,2) node[circ] () {} to [open, v=$v_{OUT}$] (3,0)
+				;
+			\end{circuitikz}
+			\caption{Peak Detector}
+		\end{figure}	
+			\2 Let the time $t_{1}$ be the first time the input reaches its maximum value $V_{P}$ and $t_{0}$ be the time to reach $V_{T}$
+			\2 When diode is IDEAL: \\
+			$v_{OUT} = \left\{ \begin{array}{ll} v_{IN}, & t < t_{1} \\ V_{P}, & t \geq t_1 \end{array} \right.$
+			\2 When diode has constant voltage model: \\
+			$v_{OUT} = \left\{ \begin{array}{ll} 0, &  0 \leq t < t_{0} \\ v_{IN} - V_{T}, & t_{0} \leq t < t_{1} \\ V_{P} - V_{T} & t_{1} \leq t  \end{array} \right.$
+		
+		\1 Peak Detector with Load Resistor (Ideal Diode)
+		\begin{figure}[!htb]
+			\centering
+			\begin{circuitikz}[american, full diodes]
+				%\ctikzset{bipoles/length=1cm}
+				\draw (0,2) to[sV, v_ = $v_{IN}$] (0,0)
+				(0,2) to[D, l=$D$] (2,2) to [cC, l_=$C$, v^ = $v_{C}$] (2,0) -- (0,0) -- (5,0) node[circ] () {} 
+				(4,2) to[R, l_=$R$] (4,0)
+				(2,2) -- (4,2) -- (5,2) node[circ] () {} to [open, v=$v_{OUT}$] (5,0)
+				;
+			\end{circuitikz}
+			\caption{Peak Detector with load resistor}
+		\end{figure}	
+		\2 Let the time $t_{1}$ be the first time the input reaches its maximum value $V_{P}$ and the period be $T$. When the capacitor voltage decays, let time $t_{2}$ be when $v_{C} = v_{IN}$ again
+		\2 $v_{OUT} = \left\{ \begin{array}{ll} v_{IN}, & t < t_{1} \\ V_{P}\exp \left( -\frac{t}{RC} \right), & t_{1} \leq t < t_2 \\ v_{IN}, & t_{2} \leq t < t_{1} + T \\ V_{P}\exp \left( -\frac{t}{RC} \right), & t_{1} + T \leq t < t_2 + T \\ \vdots & \end{array} \right.$
+	
+		\1 Negative Clamper	(ideal diode)
+		\begin{figure}[!htb]
+			\centering
+			\begin{circuitikz}[american, full diodes]
+				%\ctikzset{bipoles/length=1cm}
+				\draw (0,2) to[sV, v_ = $v_{IN}$] (0,0)
+				(0,2) to[cC, l=$C$, v = $v_{c}$] (2,2) to [D, l_=$D$] (2,0) -- (0,0) -- (3,0) node[circ] () {} 
+				(2,2) -- (3,2) node[circ] () {} to [open, v=$v_{OUT}$] (3,0)
+				;
+			\end{circuitikz}
+			\caption{Negative Clamper}
+		\end{figure}	
+			\2 Let the time $t_{1}$ be the first time the input reaches its maximum value $V_{P}$
+			\2 This is similar to the peak detector, only that $v_{OUT} = v_{IN} - v_{C}$ where $v_{C}$ follows the characteristic of the peak detector
+			\2 $v_{C} = \left\{ \begin{array}{ll} v_{IN}, & t < t_{1} \\ V_{P}, & t_{1} \leq t \end{array} \right.$
+			\2 $v_{OUT} = \left\{ \begin{array}{ll} 0, & t < t_{1} \\ v_{IN} - V_{P}, & t \geq t_1 \end{array} \right.$
+			
+		\1 Positive Clamper	(ideal diode)
+		\begin{figure}[!htb]
+			\centering
+			\begin{circuitikz}[american, full diodes]
+				%\ctikzset{bipoles/length=1cm}
+				\draw (0,2) to[sV, v_ = $v_{IN}$] (0,0)
+				(0,2) to[cC, l=$C$, v = $v_{c}$] (2,2) to [D, l_=$D$, invert] (2,0) -- (0,0) -- (3,0) node[circ] () {} 
+				(2,2) -- (3,2) node[circ] () {} to [open, v=$v_{OUT}$] (3,0)
+				;
+			\end{circuitikz}
+			\caption{Positive Clamper}
+		\end{figure}	
+			\2 Let the period be $T$
+			\2 $v_{C} = \left\{ \begin{array}{ll} 0, & 0 \leq t < T/2 \\ v_{IN}, & T/2 \leq t < 3T/4 \\ -V_{P}, & 3T/4 \leq t \end{array} \right.$	
+			\2 $v_{OUT} = \left\{ \begin{array}{ll} v_{IN}, & 0 \leq t < T/2 \\ 0, & T/2 \leq t < 3T/4\\ v_{IN} + V_{P}, & 3T/4 \leq t \end{array} \right.$
+	\end{outline}
+
+	\subsection{Exponential Diode Model}
+	\begin{outline}[enumerate]
+		\1 Shockley's Diode Equation 
+		\begin{equation}
+			i_{D} = I_{S}\left[ \exp \left( \frac{v_{D}}{\eta V_{T} } \right) - 1\right]
+		\end{equation}
+		\2 $v_{D}$: diode voltage with positive at anode
+		\2 $i_{D}$: diode current from anode to cathode
+		\2 $I_{S}$: reverse saturation current due to minority carriers. $10^{-15} \text{A} < I_{s} < 10^{-9} \text{A}$
+		\2 $\eta$: ideality factor, $1 < \eta < 2$; close to 1 for well fabricated diodes
+		\2 $V_{T}$: thermal voltage, $V_{T} = \frac{kT_{K}}{e} \approx \frac{T_{K}}{11600}$
+		\1 for typical operating voltages (forward biased): $\exp \left( \frac{v_{D}}{\eta V_{T} } \right) \gg 1 \implies i_{D} \approx I_{S} \exp \left( \frac{v_{D}}{\eta V_{T} } \right)$
+		\1 for typical reverse bias voltages, $\exp \left( \frac{v_{D}}{\eta V_{T} } \right) \ll 1 \implies i_{D} \approx - I_{S}$	
+	\end{outline}
+
+	\subsection{Small Signal Model}
+	\begin{outline}[enumerate]
+		\1 $v_{D} = V_{D} + v_{d}$ 
+		\1 $i_{D} = I_{D} + i_{d}$. $I_{D}$ is calculated using large signal analysis
+		\1 if the amplitude of $v_{d}$ is very small, the diode characteristic equation is approximately a line with conductance $g_{d} = \diffp{i_{D}}{{v_{D}}} = \frac{I_{S}}{\eta V_{T}} \exp \left( \frac{v_{D}}{\eta V_{T}} \right) \approx \frac{I_D}{\eta V_{T}} \implies r_{d} = \frac{\eta V_{T}}{I_{D}}$
+	\end{outline}
+
+	\subsection{Zener Diode}
+	\begin{figure}[!htb]
+	\centering
+		\begin{circuitikz} [american, full diodes]
+			\draw (0,0)node[circ] () {} to[zzD, v = $v_{D}$, invert, f = $i_{D}$] (2,0) node[circ] () {}
+			;
+		\end{circuitikz}
+	\end{figure}
+	\begin{outline}[enumerate]
+		\1 has 3 modes of operations: \\
+		\begin{center}
+		\begin{tabular}{lll} 
+			Operation & Condition & Equivalent \\
+			Forward-biased & $v_{D} \leq V_{T}$ & $v_{D} = -V_{T}$ \\
+			Non-conducting & $-V_{T} < v_{D} < V_{Z}$ & open circuit \\
+			Zener region & $v_{D} \geq V_{Z}$ & $v_{D} = V_{Z}$
+		\end{tabular}
+		\end{center}
+	\end{outline}
+	
+	
+	\section{PN Juncion and BJT Operation}
+	\section{BJTs as Amplifiers}
+	\section{MOSFETs as Amplifiers}
+	\section{Small Signal Analysis of Transistor Amplifiers}
+	\section{Amplifier Frequency Response}
+\end{document}
