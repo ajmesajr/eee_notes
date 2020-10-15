@@ -208,7 +208,7 @@
 			\caption{Peak Detector with load resistor}
 		\end{figure}	
 		\2 Let the time $t_{1}$ be the first time the input reaches its maximum value $V_{P}$ and the period be $T$. When the capacitor voltage decays, let time $t_{2}$ be when $v_{C} = v_{IN}$ again
-		\2 $v_{OUT} = \left\{ \begin{array}{ll} v_{IN}, & t < t_{1} \\ V_{P}\exp \left( -\frac{t}{RC} \right), & t_{1} \leq t < t_2 \\ v_{IN}, & t_{2} \leq t < t_{1} + T \\ V_{P}\exp \left( -\frac{t}{RC} \right), & t_{1} + T \leq t < t_2 + T \\ \vdots & \end{array} \right.$
+		\2 $v_{OUT} = \left\{ \begin{array}{ll} v_{IN}, & t < t_{1} \\ V_{P}\exp \left( -\frac{t - t_{1}}{RC} \right), & t_{1} \leq t < t_2 \\ v_{IN}, & t_{2} \leq t < t_{1} + T \\ V_{P}\exp \left( -\frac{t - (t_{1} + T)}{RC} \right), & t_{1} + T \leq t < t_2 + T \\ \vdots & \end{array} \right.$
 	
 		\1 Negative Clamper	(ideal diode)
 		\begin{figure}[!htb]
@@ -286,8 +286,93 @@
 		\end{center}
 	\end{outline}
 	
-	
 	\section{PN Juncion and BJT Operation}
+	\subsection{Semiconductor Fundamentals}
+	\begin{outline}[enumerate]
+		\1 The Silicon (14) Atom: 	
+			\2 has 4 valence electrons
+			\2 the semiconductor lattice has bounded valence electrons at $0$K
+			\2 energy bands: electrons can occupy discrete energy levels 
+			\2 there is a \textbf{band gap} between the valence band and conduction band 
+			\2 at higher temperatures, an electron can gain enough energy to break the bonds 
+			\2 when an electron leaves a bond, it leaves a positively charged \textbf{hole}
+		\1 Groups by electrical properties: 
+			\2 insulators: huge band gap 
+			\2 conductor: conduction band and valence overlap
+			\2 semiconductor: small band gap that can be easily reached
+		\1 Semiconductors: 
+			\2 narrow band gap 
+			\2 has 2 groups:
+				\3 intrinsic: just enough valence electrons to complete the matrix.  either has group IV semiconductors (Si and Ge) or III-V compound (GaAs)		
+				\3 extrinsic: produced by doping intrinsic semiconductors
+					\4 N-type: dopants have excess electrons. energy level just below the conduction band
+					\4 P-type: dopants have less electrons. energy level just above the valence 
+		\1 Fermi level: hypothetical energy level where there is $50\%$ probability that the level is occuppied by an electron at any given time 			
+			\2 intrinsic semiconductor: midway between $E_{C}$ and $E_{V}$
+			\2 extrinsic semiconductor: 
+				\3 N-type: closer to $E_{C}$
+				\3 P-type: closer to $E_{V}$
+	\end{outline}
+
+	\subsection{Carrier Actions in Semiconductors}
+	\begin{outline}[enumerate]
+		\1 Charge Carriers: the electrons and holes. units in coulombs (C)
+		\1 Intrinsic semiconductor: $n = p$ equal concentration of electrons and holes
+		\1 N-type semiconductors:
+			\2 $n > p$
+			\2 majority charge carriers: electrons
+			\2 minority charge carriers: holes
+		\1 P-type semiconductors:
+			\2 $p > n$	
+			\2 majority charge carriers: holes
+			\2 minority charge carriers: electrons
+		\1 Current: rate of movement of charge past a point or region. units in ampere (A). $+$ is the direction of the hole/opposite the electron
+		\1 Mobility: ability of charge carrier to move. $\mu_{e} > \mu_{h}$
+		\1 Factors that affect mobility:
+			\2 Scattering - the random motion of charges. One mechanism is the \textit{lattice scattering} when electrons bump with the vibrating lattice or other electrons and change directions
+			\2 another scattering mechanism is \textit{impurity scattering} when dopant ions deflect charge carriers
+			\2 Temperature vs Scattering vs Mobility. At low temperatures, impurity scattering dominates (and with low mobility). at high temperatures, lattice scattering dominates (and low mobility). there is a temperature in the middle with maximum mobility. (like a parabolic log-log graph)
+			\2 Doping vs Scattering vs Mobility. more doping = more impurity scattering 
+			\2 scattering has a net current of $0$ 
+		\1 There are 3 primary carrier actions:
+			\2 Generation and Recombination: generation = electron gains enough energy to break a covalent bond and leaves a hole. recombination = moving electron moves close to a hole and experience attractive force 
+			\2 Diffusion: electrons move from higher concentration/temperature to lower concentration/temperature. $+$ diffusion is parallel to positive charges. becomes $0$ when there is uniform distribution of charge carriers 
+			\2 Drift: caused by applied external voltage. modeled by a constant drift velocity $v_{d} = \mu E$ (directly related to the electric field with the mobility as constant)
+				\3 $I_n = -Aqnv_\text{n-drift}$
+				\3 $I_p = Aqpv_\text{p-drift}$
+ 	\end{outline}
+ 
+ 	\subsubsection{PN Junction}
+ 	\begin{outline}[enumerate]
+ 		\1 PN Junction: formed when in a single silicon crystal, one region is doped with donor dopants (N-type) and the other with acceptor dopants (P-type). PN Junction is the boundary.
+ 		\1 Depletion Region: happens at the boundary when the electrons diffuse and recombine with the holes at the P-type region. This results to a potential difference (and thus an electric field) across the depletion region (points from N to P)
+ 			\2 drift current of minority carriers are drifted by this electric field
+ 		\1 There are 3 junction operations:
+ 			\2 Open-circuit (equilibrium condition):
+ 				\3 the diffusion current $I_{D}$ is limited by the built in voltage $V_{0}$ and equal to the drift current $I_{S}$
+ 			\2 Forward Bias ($+$ on the P-type)
+ 				\3 the $+$ potential pushes the holes in the P-type and the depletion region in the P-side decreases 
+ 				\3 the $-$ potential pushes the electrons in the N-type and the depletion region in this side also decreases 
+ 				\3 the diffusion current $I_{D}$ dominates, but the temperature dependent $I_{S}$ remain the same
+ 				\3 the net current $I = I_{D} - I_{S}$ in the direction from P to N
+ 				\3 when $V_{F} \geq V_{o}$, the depletion region disappears and $I \approx I_{D}$
+ 			\2 Reverse Bias ($+$ on the N-type)
+ 				\3 the $+$ potential attracts the electrons in the N-type, the depletion region becomes larger
+ 				\3 the $-$ potential attracts the holes in the P-type, the depletion region becomes larger
+ 				\3 the voltage $V_{o}$ increases so $I_{D}$ decreases
+ 				\3 net current $I = I_{D} - I_{S}$ from N to P
+ 				\3 if $I_{D}$ becomes very small, $I \approx -I_{S}$	
+ 		\1 The energy band diagram will align the Fermi levels, thus bending the $E_{C}$ and $E_{V}$ with the maximum deviation $V_{0}$
+ 			\2 at forward bias, $V_{0}$ decreases so the bending energy will also decrease and the Fermi level will not be aligned anymore ($E_{FN}$ is higher) 
+ 			\2 at reverse bias, $V_{0}$ increases so the bending energy will also inrease and the Fermi level will not be aligned anymore ($E_{FN}$ is lower)
+ 		\1 The PN Junction implements a Diode. anode at P, cathode at N	
+ 			\2 the Shockley Equation summarizes the 3 conditions for the PN Junction operations
+ 			\2 Diode resistivity: 
+ 				\3 at higher temperature, more electrons are freed and resistivity decreases
+ 				\3 higher doping density lowers the resistivity
+ 	\end{outline}
+	
+	
 	\section{BJTs as Amplifiers}
 	\section{MOSFETs as Amplifiers}
 	\section{Small Signal Analysis of Transistor Amplifiers}
