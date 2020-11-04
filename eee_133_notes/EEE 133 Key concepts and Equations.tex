@@ -58,8 +58,8 @@
 	\begin{tabular}{| L | L | L | L |}
 		\hline
 		f(t) = \mathcal{L}^{-1}[F(s)] & F(s) = \mathcal{L}[F(s)] & f(t) = \mathcal{L}^{-1}[F(s)] & F(s) = \mathcal{L}[F(s)] \\ \hline
-		\delta(t) & 1 & \frac{1}{\beta - \alpha}\left(\exp(-\alpha t) - \exp(-\beta t)\right)u(t) & \frac{1}{(s + \alpha)(s + \beta)} \\ \hline
-		u(t) & \frac{1}{s} & \sin(\omega t) u(t) & \frac{\omega}{s^2 + \omega^2} \\ \hline
+		\delta(t - a) & \exp \left( - as \right) & \frac{1}{\beta - \alpha}\left(\exp(-\alpha t) - \exp(-\beta t)\right)u(t) & \frac{1}{(s + \alpha)(s + \beta)} \\ \hline
+		u(t - a) & \frac{\exp \left(-as \right)}{s} & \sin(\omega t) u(t) & \frac{\omega}{s^2 + \omega^2} \\ \hline
 		tu(t) & \frac{1}{s^2} & \cos(\omega t) u(t) & \frac{s}{s^2 + \omega^2} \\ \hline 
 		\frac{t^{n - 1}}{(n - 1)!} u(t) & \frac{1}{s^n} & \sin(\omega t + \theta) u(t) & \frac{s\sin(\theta) + \omega\cos(\theta)}{s^2 + \omega^2} \\ \hline
 		\exp(-\alpha t) u(t) & \frac{1}{s + \alpha} & \cos(\omega t + \theta) u(t) & \frac{s\cos(\theta) - \omega\sin(\theta)}{s^2 + \omega^2} \\ \hline
@@ -77,7 +77,7 @@
 			Addition & $f_1(t) + f_2(t) - f_3(t) + \ldots$ & $F_1(s) + F_2(s) - F_3(s) + \ldots$ \\ \hline
 			First time derivative & $\diff{f(t)}{t}$ & $sF(s) - f(0^-)$ \\ \hline 
 			Second time derivative & $\diff[2]{f(t)}{t}$ & $s^2F(s) - sf(0^-) - \diff{f(0^-)}{t}$ \\ \hline
-			$n$th time derivative & $\diff[n]{f(t)}{t}$ & $s^nF(s) - \sum_{i = 1}^{n}s^{n - 1}\diff[i - 1]{f}{t}$ \\ \hline
+			$n$th time derivative & $\diff[n]{f(t)}{t}$ & $s^nF(s) - \sum_{i = 1}^{n}s^{n - i}\diff[i - 1]{f(0^-)}{t}$ \\ \hline
 			Time integral & $\int\limits_0^t f(x)\dd x$ & $\frac{F(s)}{s}$ \\ \hline
 			Translation in time & $f(t - a)u(t - a),~a > 0$ & $\exp(-as)F(s)$ \\ \hline
 			Translation in frequency & $\exp(-at)f(t)$ & $F(s + a)$ \\ \hline
@@ -549,22 +549,98 @@
 	H(s) = \frac{Y(s)}{X(s)}
 	\end{equation}
 	\begin{center}
-	\begin{tabular}{|l|l|l|}
+	\begin{tabular}{|l|l|l|l|l|l|}
 		\hline
-		& & $H(s)$ of series RL \\ \hline
-		\multirow{2}{*}{Input is $V(t)$} & Output is $i(t)$ & $H(s) = \frac{1}{R + sL}$ \\ \cline{2-3}
-		& Output is $v(t)$ & $H(s) = \frac{sL}{R + sL}$ \\ \hline
+		\multicolumn{2}{|l|}{} & $H(s)$ of series RL & \multicolumn{2}{l|}{} & $H(s)$ of parallel RC \\ \hline
+		\multirow{3}{*}{Input is $V(t)$} & Output is $i(t)$ & $H(s) = \frac{1}{R + sL}$ & \multirow{3}{*}{Input is $I(t)$} & Output is $v(t)$ & $H(s) = \frac{R}{1 + sRC}$ \\ \cline{2-3} \cline{5-6}
+		& Output is $v_{L}(t)$ & $H(s) = \frac{sL}{R + sL}$ & & Output is $i_{C}(t)$ & $H(s) = \frac{sRC}{1 + sRC}$ \\ \cline{2-3}  \cline{5-6}
+		& Output is $v_{R}(t)$ & $H(s) = \frac{R}{R + sL}$ & & Output is $i_{R}(t)$ & $H(s) = \frac{1}{1 + sRC}$ \\ \hline 
 	\end{tabular}
 	\end{center}
-	
-	\subsubsection{$v(t) = V_0\cos(\omega t)$}
-	The response has the form $i(t) = I_1\cos(\omega t) + I_2\sin(\omega t)$. Exploit the transfer function of the circuit. 
-	
+		
 	\section{Ramp and Sine Response}
+	\begin{outline}[enumerate]
+		\1 \textbf{Ramp Response:}	
+			\2 $\mathcal{L} \left[ r\left( t \right) \right] = \frac{1}{s^{2}}$
+		\1 \textbf{Sine Response:}
+			\2 use the natural response equation as homogenous solution
+			\2 use phasor analysis to find the forced response
+			\2 add the two to find the coefficient of the natural response using initial values
+			\2 the transient is $0$ for some angle $\atan \left( \frac{\omega L}{R} \right)$ or $\atan \left( \frac{\omega}{RC} \right)$	
+	\end{outline}
 	\section{Second Order System}
+	\begin{outline}[enumerate]
+		\1 the following transfer functions are used in RLC circuits:
+		\1 Series RLC:	
+			\begin{align}
+				\frac{V_{L} \left( s \right)}{V_{in} \left( s \right)} &= \frac{ s^{2} }{s^{2} + \left( \frac{R}{L} \right) s + \frac{1}{LC}} \\
+				\frac{V_{R} \left( s \right)}{V_{in} \left( s \right)} &= \frac{\left( \frac{R}{L} \right) s }{s^{2} + \left( \frac{R}{L} \right) s + \frac{1}{LC}} \\
+				\frac{V_{C} \left( s \right)}{V_{in} \left( s \right)} &= \frac{ \frac{1}{LC} }{s^{2} + \left( \frac{R}{L} \right) s + \frac{1}{LC}}
+			\end{align}
+		\1 Parallel RLC: 
+			\begin{align}
+				\frac{I_{L} \left( s \right)}{I_{in} \left( s \right)} &= \frac{ \frac{1}{LC} }{s^{2} + \left( \frac{1}{RC} \right) s + \frac{1}{LC}} \\
+				\frac{I_{R} \left( s \right)}{I_{in} \left( s \right)} &= \frac{\left( \frac{1}{RC} \right) s }{s^{2} + \left( \frac{1}{RC} \right) s + \frac{1}{LC}} \\
+				\frac{I_{C} \left( s \right)}{I_{in} \left( s \right)} &= \frac{ s^{2} }{s^{2} + \left( \frac{1}{RC} \right) s + \frac{1}{LC}}
+			\end{align}
+		\1 to determine the damping, rewrite the denominator: $\frac{ \frac{1}{\omega_{0}^{2}} }{ \left( \frac{s}{\omega_{0}} \right)^{2} + 2 \zeta \left( \frac{s}{\omega_{0}} \right) + \frac{1}{\omega_{0}^{2}} }$
+	\end{outline}
+
 	\section{Transients in Power Systems}
+	\begin{outline}[enumerate]
+		Load Energization
+		\1 RL Circuit:
+			\2 $P = pf * VI = I^{2}R$
+			\2 $Q = I^{2}X_{L}$
+			\2 $X_{L} = 2\pi f L$ 
+		\1 LC (Capacitor Energization)
+			\2 $Y_{C} = \frac{Q_{C}}{V^{2}} = 2\pi f C$
+			\2 $\omega_{i} = \frac{1}{\sqrt{LC}}$. when $\omega_{i} \gg \omega_{s}$, we assume the source to be DC 
+			\2 $V_{s} = V\sqrt{2}$
+			\2 $v_{c}\left( t \right) = \left[1 - \cos \left( \omega_{i} t \right) \right]V_{s}$	
+			\2 $I_{SC} = \frac{MVA_{SC}}{V}$
+			\2 $X_{L} = \frac{V}{I_{SC}} = \frac{V^{2}}{MVA_{SC}} = 2\pi f L$
+			\2 $Q_{C} = \frac{V^{2}}{X_{C}} = V^{2} 2\pi f C$
+		\1 The Circuit Closing Transient (RL):
+			\2 input is $V_{m} \sin \left( \omega t + \theta \right)$
+			\2 $i\left( t \right) = \frac{V_{m}}{Z} \left[ \sin \left( \omega t + \theta - \atan \left( \frac{\omega L}{R} \right) \right) - \sin \left( \theta - \atan \left( \frac{\omega L}{R} \right) \right) \exp \left( -\frac{Rt}{L} \right) \right]$
+			\2 $Z = \sqrt{R^{2} + \omega^{2}L^{2}}$
+			\2 there is no transient when $\theta = \atan \left( \frac{\omega L}{R} \right)$
+	\end{outline}
+	
+	\section{Filter Transient Response and Design}
+	\begin{figure}[!htb]
+		\centering
+		\begin{circuitikz}[american, scale = 0.75]
+			\draw (0,0) node[op amp, yscale = -1] (op1) {}
+			(op1.+) -- ++(-2,0) coordinate(B)
+			(op1.out) to[R, l = $R_{f}$] ++(0,-2) coordinate(C) to [R, l = $R_{1}$] ++(0,-2) node[ground] () {} 
+			(op1.out) -- ++(2,0) node[ocirc, label = {right:$v_{o}$}] () {}
+			(op1.-) -- ++(-0.5,0) |- (C)
+			(B) to[C, l = $C$] ++(0,-3.5) node[ground] () {}
+			(B) to[R, l = $R$] ++(-3,0) coordinate(D) to[R, l = $R$] ++(-3,0) node[ocirc, label = {left:$v_{i}$}] () {} 
+			(D) |- ++(3,2) to[C, l = $C$] ++(2,0) -| (op1.out)
+			; 
+		\end{circuitikz}
+		\caption{Sallen-Key Lowpass Filter}
+	\end{figure}
+	\begin{outline}[enumerate]
+		\1 $\frac{V_{o} \left( s \right)}{V_{i} \left( s \right)} = \frac{1}{s^{2} \left( RC \right)^{2} + 2s \left( \frac{3 - K}{2} \right) + 1}$
+			\2 $K = \frac{R_{f} + R_{1}}{R_{1}}$
+			\2 $\omega_{0} = \frac{1}{RC}$
+			\2 $\alpha = \frac{3 - K}{2RC}$
+			\2 $\zeta = \frac{3 - K}{2} = \frac{\alpha}{\omega_{0}}$
+		\1 Analog Filters:
+			\2 $R = \frac{k_{1}}{Cf_{c}}$
+			\2 $\omega_{0} = \frac{1}{RC} = \frac{f_{c}}{k_{1}}$
+			\2 $R_{f} = R_{1}k_{2}$	
+			\2 $K = 1 + k_{2}$
+			\2 Chebychev filter: has the sharpest roll-off, but allows ripples in the passband
+			\2 Butterworth filter: 2nd sharpest roll-off \textit{without} ripples in passband
+			\2 Bessel filter: has least ringing and overshoot in step response.
+	\end{outline}
+
 	\section{Switching Power Supply}
-	\section{Filter Design}
 	
 	
 \end{document}
