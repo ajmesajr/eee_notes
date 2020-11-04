@@ -1,6 +1,5 @@
-%ver 4 of my own sty file 
 %Allan J. Mesa Jr.
-%25 Sept 2020
+%4 Nov 2020
 
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{ajmesa}[2020/09/01 ajmesajr package]
@@ -41,6 +40,8 @@
 \RequirePackage{xpatch}
 \RequirePackage{pgfplots}
 \RequirePackage{float}
+\RequirePackage{tabularx}
+\RequirePackage{indentfirst}
 \RequirePackage[default,scale=0.95]{opensans}
 
 %increase table row heights
@@ -52,9 +53,11 @@
 %equation numbers
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 
-%ceil and floor
+%math operators
 \providecommand{\ceil}[1]{\left \lceil #1 \right \rceil }
 \providecommand{\floor}[1]{\left \lfloor #1 \right \rfloor }
+\providecommand{\bracket}[1]{\left \langle #1 \right \rangle}
+\providecommand{\absolute}[1]{\left \lvert #1 \right \rvert}
 
 %no space mod
 \newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
@@ -120,19 +123,19 @@
 
 
 %some trig functions
-\newcommand{\atanh}[1]{\tanh^{-1}\left(#1\right)}
-\newcommand{\asinh}[1]{\sinh^{-1}\left(#1\right)}
-\newcommand{\acosh}[1]{\cosh^{-1}\left(#1\right)}
-\newcommand{\acoth}[1]{\coth^{-1}\left(#1\right)}
-\newcommand{\asech}[1]{\sech^{-1}\left(#1\right)}
-\newcommand{\acsch}[1]{\csch^{-1}\left(#1\right)}
+\newcommand{\atanh}{\tanh^{-1}}
+\newcommand{\asinh}{\sinh^{-1}}
+\newcommand{\acosh}{\cosh^{-1}}
+\newcommand{\acoth}{\coth^{-1}}
+\newcommand{\asech}{\sech^{-1}}
+\newcommand{\acsch}{\csch^{-1}}
 
-\newcommand{\atan}[1]{\tan^{-1}\left(#1\right)}
-\newcommand{\asin}[1]{\sin^{-1}\left(#1\right)}
-\newcommand{\acos}[1]{\cos^{-1}\left(#1\right)}
-\newcommand{\acot}[1]{\cot^{-1}\left(#1\right)}
-\newcommand{\asec}[1]{\sec^{-1}\left(#1\right)}
-\newcommand{\acsc}[1]{\csc^{-1}\left(#1\right)}
+\newcommand{\atan}{\tan^{-1}}
+\newcommand{\asin}{\sin^{-1}}
+\newcommand{\acos}{\cos^{-1}}
+\newcommand{\acot}{\cos^{-1}}
+\newcommand{\asec}{\sec^{-1}}
+\newcommand{\acsc}{\csc^{-1}}
 
 %vector calculus shortcuts
 \newcommand{\grad}{\nabla}
@@ -148,7 +151,8 @@
 \ctikzset{
 	resistors/scale = 0.75, 
 	capacitors/scale = 0.6,
-	diodes/scale = 0.6
+	diodes/scale = 0.4
+	%inductors/scale = 0.75
 }
 
 %ohm for resistors
@@ -164,6 +168,10 @@
 
 %page breaks for math align
 \allowdisplaybreaks
+
+%tabular center vertically
+\renewcommand\tabularxcolumn[1]{m{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
 
 \ProcessOptions\relax
 
