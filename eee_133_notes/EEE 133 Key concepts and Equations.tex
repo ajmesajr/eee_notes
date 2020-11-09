@@ -640,7 +640,55 @@
 			\2 Bessel filter: has least ringing and overshoot in step response.
 	\end{outline}
 
-	\section{Switching Power Supply}
-	
-	
+	\section{Switching-Mode Power Supply}
+	\begin{outline}[enumerate]
+		\1 SMPS: ransfers electric energy from asource to a load using circuits with power semiconductors that switch on and off at high frequency
+			\2 AC - DC 
+			\2 DC - AC 
+			\2 AC - AC
+			\2 DC - DC
+				\3 Step Up (Boost)
+				\3 Step Down (Buck)
+				\3 Step up/step down
+				\3 multiple outputs 
+		\1 Pulse Width Modulation: uses a square wave with duty cycle modulated, resulting in change in average value of waveform	
+			\2 $\bar{y} = Dy_\text{max} + \left( 1 - D \right) y_\text{min}$	
+			\2 $D = \frac{t_\text{on}}{T}$
+		\1 Switching converter: a constant DC supply is on only for the duty cycle time. 
+			\2 $V_{o} = V_{s} D$
+		\1 Buck Converter: output voltage is lower but output current is higher 
+		\begin{figure}[!htb]
+			\centering
+			\begin{circuitikz}[american, scale = 1.5]
+				\draw (2,-2.0) to[D,l=SW$2$] (2,-0.0);
+				\draw (0,-0.0) to[V,l=$V$] (0,-2.0);
+				\draw (2,-0.0) to[L,l=$L$, v = $v_{L}$, f = $i_{L}$] (4,-0.0);
+				\draw (4,-0.0) to[C,l=$C$, f>_ = $i_{C}$] (4,-2.0);
+				\draw (6,-0.0) to[R,l=$R$, f>_ = $i_{R}$] (6,-2.0);
+				\draw (2.25,-0.5) to[open, v = $v_{x}$] (2.25,-1.5);
+				\draw (0,-2.0) to[short] (6,-2.0);
+				\draw (6,-0.0) to[short] (4,-0.0);
+				\draw (0,-0.0) to[switch, n = sW, l = SW$1$] (2,-0.0);
+			\end{circuitikz}
+			\caption{Buck Converter}
+		\end{figure}	
+			\2 assume the following:
+			\2 steady state operation 
+			\2 periodic inductor current
+			\2 average inductor voltage is $0$
+			\2 average capacitor current is $0$
+			\2 $i_{L} = \left\{ \begin{array}{ll}
+				\frac{V_{S} - V_{o}}{L}t + I_\text{min} & 0 \leq t \leq t_\text{on} \\
+				\frac{-V_{o}}{L} \left( t - t_\text{on} \right) + I_\text{max} & t_\text{on} \leq t \leq T 
+			\end{array} \right.$
+			\2 $I_{o} = \frac{V_{o}}{R} = I_\text{min} + \frac{1}{2} \left( \frac{V_{s} - V_{o}}{L} \right)t_\text{on}$
+			\2 $t_\text{on} = DT = \frac{D}{f}$
+			\2 $D = \frac{V_{o}}{V_{s}}$
+			\2 $L = \frac{1}{2} \frac{D}{f} \left( \frac{V_{s} - V_{o}}{\frac{V_{o}}{R} - I_\text{min} } \right)$
+			\2 boundary inductor (at $I_\text{min}$): $L_{b} = \frac{D \left( V_{s} - V_{o} \right) R}{2fV_{o}} = \frac{R \left( 1 - D \right)}{2f}$
+				\3 $L < L_{b}$: DCM operation
+				\3 $L = L_{b}$: CDCM operation
+				\3 $L > L_{b}$: CCM operation
+	\end{outline}
+
 \end{document}
