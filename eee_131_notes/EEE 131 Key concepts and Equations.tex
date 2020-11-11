@@ -4,7 +4,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-%\rhead{}
+%\rhead{Math 40 - WFY | Julius Basilla}
 %\chead{2019-04243}
 \lhead{EEE 133 Key concepts and equations}
 \cfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
@@ -374,6 +374,40 @@
 	
 	
 	\section{BJTs as Amplifiers}
+	\subsection{DC Characteristics and Operating Modes}
+	\begin{center}
+		\begin{tabular}{|l|l|l|}
+			\hline
+			Mode of Operation & EB Junction & CB Junction \\ \hline
+			Cut-off & Reverse-biased & Reverse-biased \\ \hline
+			Active & Forward-biased & Reverse-biased \\ \hline
+			Saturation & Forward-biased & Forward-biased \\ \hline
+			Reverse Active & Forward-biased & Reverse-biased \\ \hline
+		\end{tabular}
+	\end{center}
+	\begin{outline}[enumerate]
+		\1 Cutoff Mode Relationships:
+			\2 $I_{B} = I_{C} = I_{E} = 0$
+		\1 Active Mode Relationships:	
+			\2 $I_{B} = \frac{I_{S}}{\beta}  \left[ \exp \left( \frac{eV_{BE}}{kT} \right) - 1 \right] \left[ 1 + \frac{V_{CE}}{V_{A}} \right]$	
+			\2 $I_{C} = \beta I_{B} = I_{S} \left[ \exp \left( \frac{eV_{BE}}{kT} \right) - 1 \right] \left[ 1 + \frac{V_{CE}}{V_{A}} \right]$
+			\2 $I_{E} = \frac{1}{\alpha} I_{C} = \left( \beta + 1 \right) I_{B}$
+			\2 $\alpha = \frac{\beta}{\beta + 1} \Longleftrightarrow \beta = \frac{\alpha}{1 - \alpha}$
+			\2 In most cases, $V_{A} \gg V_{CE}$ so the factor is approximately $1$
+			\2 Model: 
+			\begin{figure}[!htb]
+				\centering
+				\begin{circuitikz}[american]
+					\draw (0,-0.0) node[ocirc, label={above}] () {} to[short] (1,-0.0);
+					\draw (1,-0.0) to[D,l=$D$] (1,-2.0);
+					\draw (3,-0.0) to[cI,l=$I$] (3,-2.0);
+					\draw (3,-0.0) to[short] (4,-0.0) node[ocirc] () {$C$};
+					\draw (1,-2.0) to[short] (3,-2.0);
+					\draw (2,-2.0) to[short] (2,-3.0) node[ocirc] () {$E$};
+				\end{circuitikz}
+			\end{figure}
+	\end{outline}
+
 	\section{MOSFETs as Amplifiers}
 	\section{Small Signal Analysis of Transistor Amplifiers}
 	\section{Amplifier Frequency Response}
