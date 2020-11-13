@@ -397,13 +397,222 @@
 			\2 Model: 
 			\begin{figure}[!htb]
 				\centering
+				\begin{minipage}{0.5\linewidth}
+					\centering
+					\begin{circuitikz}[american]
+						\draw (-0.5,-0.0) node[ocirc, label={above:$B$}] () {} to[short, f = $I_{B}$] (1,-0.0);
+						\draw (1,-0.0) to[V] (1,-2.0);
+						\draw (3,-0.0) to[cI, l_ = $\beta I_{B}$] (3,-2.0);
+						\draw (4.5,-0.0) node[ocirc, label={above:$C$}] () {} to[short, f_ = $I_{C}$] (3,-0.0);
+						\draw (-0.5,-2.0) node[ocirc] () {} to[short] (4.5,-2.0) node[ocirc] () {};
+						\draw (2,-2.0) to[short, f = $I_{E}$] (2,-3.5) node[ocirc, label={below:$E$}] () {};
+						\draw (-0.5,-0.0) to[open, v = $V_{BE}$] (-0.5,-2.0);
+						\draw (4.5,-0.0) to[open, v = $V_{CE}$] (4.5,-2.0);
+					\end{circuitikz}
+				\caption{NPN Transistor Active Mode}
+				\end{minipage}%
+				\begin{minipage}{0.5\linewidth}
+					\centering
+					\begin{circuitikz}[american]
+						\draw (-0.5,-0.0) node[ocirc, label={below:$B$}] () {} to[short, f< = $I_{B}$] (1,-0.0);
+						\draw (1,2.0) to[V] (1,-0.0);
+						\draw (3,2.0) to[cI, l_ = $\beta I_{B}$] (3,-0.0);
+						\draw (4.5,0.0) node[ocirc, label={below:$C$}] () {} to[short, f_< = $I_{C}$] (3,0.0);
+						\draw (-0.5,2.0) node[ocirc] () {} to[short] (4.5,2.0) node[ocirc] () {};
+						\draw (2,2.0) to[short, f< = $I_{E}$] (2,3.5) node[ocirc, label={above:$E$}] () {};
+						\draw (-0.5,2.0) to[open, v = $V_{EB}$] (-0.5,-0.0);
+						\draw (4.5,2.0) to[open, v = $V_{EC}$] (4.5,-0.0);
+					\end{circuitikz}
+					\caption{PNP Transistor Active Mode}
+				\end{minipage}
+			\end{figure}
+		\1 Saturation Mode Relationships
+			\2 $I_{C,~sat} = \beta_{forced}I_{B}$
+			\2 $V_{BE} = 0.7~V$, $V_{EB} = 0.7~V$
+			\2 $V_{CE} = 0.3~V$, $V_{EC} = 0.3~V$ edge of saturation
+			\2 deep saturation is normally $0.2~V$
+			\begin{figure}[!htb]
+				\centering
+				\begin{minipage}{0.5\linewidth}
+					\centering
+					\begin{circuitikz}[american]
+						\draw (-0.5,-0.0) node[ocirc, label={above:$B$}] () {} to[short, f = $I_{B}$] (1,-0.0);
+						\draw (1,-0.0) to[V] (1,-2.0);
+						\draw (3,-0.0) to[V] (3,-2.0);
+						\draw (4.5,-0.0) node[ocirc, label={above:$C$}] () {} to[short, f_ = $I_{C}$] (3,-0.0);
+						\draw (-0.5,-2.0) node[ocirc] () {} to[short] (4.5,-2.0) node[ocirc] () {};
+						\draw (2,-2.0) to[short, f = $I_{E}$] (2,-3.5) node[ocirc, label={below:$E$}] () {};
+						\draw (-0.5,-0.0) to[open, v = $V_{BE}$] (-0.5,-2.0);
+						\draw (4.5,-0.0) to[open, v = $V_{CE}$] (4.5,-2.0);
+					\end{circuitikz}
+					\caption{NPN Transistor Saturation Mode}
+				\end{minipage}%
+				\begin{minipage}{0.5\linewidth}
+					\centering
+					\begin{circuitikz}[american]
+						\draw (-0.5,-0.0) node[ocirc, label={below:$B$}] () {} to[short, f< = $I_{B}$] (1,-0.0);
+						\draw (1,2.0) to[V] (1,-0.0);
+						\draw (3,2.0) to[V] (3,-0.0);
+						\draw (4.5,0.0) node[ocirc, label={below:$C$}] () {} to[short, f_< = $I_{C}$] (3,0.0);
+						\draw (-0.5,2.0) node[ocirc] () {} to[short] (4.5,2.0) node[ocirc] () {};
+						\draw (2,2.0) to[short, f< = $I_{E}$] (2,3.5) node[ocirc, label={above:$E$}] () {};
+						\draw (-0.5,2.0) to[open, v = $V_{EB}$] (-0.5,-0.0);
+						\draw (4.5,2.0) to[open, v = $V_{EC}$] (4.5,-0.0);
+					\end{circuitikz}
+					\caption{PNP Transistor Saturation}
+				\end{minipage}
+			\end{figure}
+	\end{outline}
+
+	\subsection{BJT Biasing Circuits}
+	\begin{outline}[enumerate]
+		\1 Q point: fixed characteristics of the transistor
+			\2 active region for amplifier
+			\2 cut-off/saturation for switches 
+		\1 Biasing: application of DC voltages to establish the operating point 	
+		\1 Transistor Parameter variations on Temperature:
+			\2 leakage current: $I_{Co}(25^{\circ} C) = 1~nA$. doubles every $6^{\circ}$ rise 
+			\2 $V_{BE}(25^{\circ} C) = 0.7~V$. drops about $2.2~mV/^{\circ}C$
+			\2 $\beta$ doubles with an increase of $80^{\circ}C$ 
+		\begin{figure}[!htb]
+			\centering
+			\begin{minipage}{0.33\linewidth}
+				\centering
+				\begin{circuitikz}[american, scale = 0.75]
+					\draw (2,-3.0)	node[npn](Q2){};
+					\draw (Q2.C) to[short] (2,-2.0);
+					\draw (Q2.E) to[short] (2,-4.0);
+					\draw (Q2.B) to[short] (1,-3.0);
+					\draw (2,-2.0) to[R,l_ = $R_{C}$] (2,-0.0);
+					\draw (0,-0.0) to[R,l = $R_{B}$] (0,-3.0);
+					\draw (0,-3.0) to[short] (1,-3.0);
+					\draw (0,-0.0) to[short] (2,-0.0);
+					\draw (2,-4.0) to[short] (2,-6.0);
+					\draw (2,-6.0) node[ground]{};
+					\draw (2,-0.0) to[short] (2,1.0);
+					\draw (2,1.0) node[vcc]{VCC};
+				\end{circuitikz}
+				\caption{Fixed Bias Circuit}
+			\end{minipage}%
+			\begin{minipage}{0.33\linewidth}
+				\centering
+				\begin{circuitikz}[american, scale = 0.75]
+					\draw (2,-3.0)	node[npn](Q2){};
+					\draw (Q2.C) to[short] (2,-2.0);
+					\draw (Q2.E) to[short] (2,-4.0);
+					\draw (Q2.B) to[short] (1,-3.0);
+					\draw (2,-2.0) to[R,l_ = $R_{C}$] (2,-0.0);
+					\draw (0,-0.0) to[R,l = $R_{B}$] (0,-3.0);
+					\draw (0,-3.0) to[short] (1,-3.0);
+					\draw (0,-0.0) to[short] (2,-0.0);
+					\draw (2,-4.0) to[R,l = $R_{E}$] (2,-6.0);
+					\draw (2,-6.0) node[ground]{};
+					\draw (2,-0.0) to[short] (2,1.0);
+					\draw (2,1.0) node[vcc]{VCC};
+				\end{circuitikz}
+				\caption{Emitter Stabilized}
+			\end{minipage}%
+			\begin{minipage}{0.33\linewidth}
+				\centering
+				\begin{circuitikz}[american, scale = 0.75]
+					\draw (2,-3.0)	node[npn](Q2){};
+					\draw (Q2.C) to[short] (2,-2.0);
+					\draw (Q2.E) to[short] (2,-4.0);
+					\draw (Q2.B) to[short] (1,-3.0);
+					\draw (2,-2.0) to[R,l_ = $R_{C}$] (2,-0.0);
+					\draw (0,-0.0) to[R,l_ = $R_{1}$] (0,-3.0);
+					\draw (0,-3.0) to[short] (1,-3.0);
+					\draw (0,-0.0) to[short] (2,-0.0);
+					\draw (2,-4.0) to[R,l = $R_{E}$] (2,-6.0);
+					\draw (2,-6.0) node[ground]{};
+					\draw (2,-0.0) to[short] (2,1.0);
+					\draw (2,1.0) node[vcc]{VCC};
+					\draw (0,-3.0) to[R,l_=$R_{2}$] (0,-6.0);
+					\draw (0,-6.0) node[ground]{};
+				\end{circuitikz}
+				\caption{Voltage Divier Bias}
+			\end{minipage}
+		\end{figure}
+	\end{outline}
+
+	\newpage
+	\subsection{BJT Amplifiers}
+	\begin{outline}[enumerate]
+		\1 General steps in circuit analysis:
+			\2 In the DC part, treat the capacitors as open
+			\2 The DC analysis calculates the Q point values 
+			\2 In the AC part, treat the capacitors and DC voltage sources as shorts
+		\1 Common Emitter Amplifier:
+			\2 Inverting amplifier with very huge gains
+		\begin{figure}[!htb]
+			\centering
+			\begin{circuitikz}[american]
+				\draw (2,-3.0) node[npn](Q2){};
+				\draw (Q2.C) to[short] (2,-2.0);
+				\draw (Q2.E) to[short] (2,-4.0);
+				\draw (Q2.B) to[short] (1,-3.0);
+				\draw (2,-2.0) to[R,l=$R_{C}$] (2,-0.0);
+				\draw (0,-0.0) to[R,l=$R_{2}$] (0,-3.0);
+				\draw (0,-3.0) to[short] (1,-3.0);
+				\draw (0,-0.0) to[short] (2,-0.0);
+				\draw (2,-6.0) node[ground]{};
+				\draw (2,-0.0) to[short] (2,1.0);
+				\draw (2,1.0) node[vcc]{VCC};
+				\draw (2,-4.0) to[R,l=$R_{E}$] (2,-6.0);
+				\draw (0,-3.0) to[R,l=$R_{1}$] (0,-6.0);
+				\draw (0,-6.0) node[ground]{};
+				\draw (2,-2.0) to[C,l=$C \to \infty$] (5.5,-2.0) node[ocirc, label={right:$v_{OUT}$}] () {};
+				\draw (3.5,-4.0) to[C,l=$C \to \infty$] (3.5,-6.0);
+				\draw (0,-3.0) to[C,l=$C \to \infty$] (-2,-3.0);
+				\draw (-2,-3.0) to[V,l=$v_{IN}$] (-2,-6.0);
+				\draw (5.5,-2.0) to[R,l=$R_{L}$] (5.5,-6.0);
+				\draw (-2,-6.0) node[ground]{};
+				\draw (3.5,-6.0) node[ground]{};
+				\draw (5.5,-6.0) node[ground]{};
+				\draw (2,-4.0) to[short] (3.5,-4.0);
+				\draw (5.5,-2.0) node[ocirc, label={right:$v_{OUT}$} ] () {};
+			\end{circuitikz}
+			\caption{CE Amplifier}
+		\end{figure}
+		\1 Common Base Amplifier:
+			\2 has a sudden rise of gain in the vicinity of the $V_{BE}$ threshold
+			\begin{figure}[!htb]
+				\centering
 				\begin{circuitikz}[american]
-					\draw (0,-0.0) node[ocirc, label={above}] () {} to[short] (1,-0.0);
-					\draw (1,-0.0) to[D,l=$D$] (1,-2.0);
-					\draw (3,-0.0) to[cI,l=$I$] (3,-2.0);
-					\draw (3,-0.0) to[short] (4,-0.0) node[ocirc] () {$C$};
-					\draw (1,-2.0) to[short] (3,-2.0);
-					\draw (2,-2.0) to[short] (2,-3.0) node[ocirc] () {$E$};
+					\draw (0,-0.0) node[npn, rotate=90, yscale=-1](Q5){};
+					\draw (Q5.C) to[short] (1.0,-0.0);
+					\draw (Q5.B) to[short] (0,-1.0);
+					\draw (Q5.E) to[short] (-1,-0.0);
+					\draw (1,-0.0) to[short] (1,1.0);
+					\draw (1,1.0) to[R,l=$R_{C}$] (1,3.0);
+					\draw (1,3.0) node[vcc]{VCC};
+					\draw (0,-1.0) node[ground]{};
+					\draw (-1,-0.0) to[short] (-1.5,-0.0);
+					\draw (-1.5,-0.0) node[ocirc, label={above:$v_{IN}$}] () {};
+					\draw (1,1.0) to[short] (2,1.0);  
+					\draw (2,1.0) node[ocirc, label={above:$v_{OUT}$}] () {};
+				\end{circuitikz}
+			\end{figure}
+		
+		\newpage
+			
+		\1 Common Collector Amplifier:
+			\2 has unity gain
+			\2 is a voltage follower
+			\begin{figure}[!htb]
+				\centering
+				\begin{circuitikz}[american]
+					\draw (2,-0.0) node[npn](Q6){};
+					\draw (Q6.C) to[short] (2,1.0);
+					\draw (Q6.E) to[short] (2,-1.0);
+					\draw (Q6.B) to[short] (1,-0.0);
+					\draw (0,-0.0) to[short] (1,-0.0);
+					\draw (2,1.0) node[vcc]{VCC};
+					\draw (2,-1.0) to[R,l=$R_{E}$] (2,-3.0);
+					\draw (2,-3.0) node[ground] {};
+					\draw (2,-1.0) to[short] (3,-1.0);
+					\draw (3,-1.0) node[ocirc, label={above:$v_{OUT}$}] () {};
+					\draw (0,-0.0) node[ocirc, label={above:$v_{IN}$}] () {};
 				\end{circuitikz}
 			\end{figure}
 	\end{outline}
