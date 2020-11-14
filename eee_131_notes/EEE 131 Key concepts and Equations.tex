@@ -277,15 +277,17 @@
 	\begin{outline}[enumerate]
 		\1 has 3 modes of operations: \\
 		\begin{center}
-		\begin{tabular}{lll} 
-			Operation & Condition & Equivalent \\
-			Forward-biased & $v_{D} \leq V_{T}$ & $v_{D} = -V_{T}$ \\
-			Non-conducting & $-V_{T} < v_{D} < V_{Z}$ & open circuit \\
-			Zener region & $v_{D} \geq V_{Z}$ & $v_{D} = V_{Z}$
+		\begin{tabular}{|l|l|l|} 
+			\hline
+			Operation & Condition & Equivalent \\ \hline
+			Forward-biased & $v_{D} \leq V_{T}$ & $v_{D} = -V_{T}$ \\ \hline
+			Non-conducting & $-V_{T} < v_{D} < V_{Z}$ & open circuit \\ \hline
+			Zener region & $v_{D} \geq V_{Z}$ & $v_{D} = V_{Z}$ \\ \hline
 		\end{tabular}
 		\end{center}
 	\end{outline}
 	
+	\newpage
 	\section{PN Juncion and BJT Operation}
 	\subsection{Semiconductor Fundamentals}
 	\begin{outline}[enumerate]
@@ -372,7 +374,7 @@
  				\3 higher doping density lowers the resistivity
  	\end{outline}
 	
-	
+	\newpage
 	\section{BJTs as Amplifiers}
 	\subsection{DC Characteristics and Operating Modes}
 	\begin{center}
@@ -617,7 +619,329 @@
 			\end{figure}
 	\end{outline}
 
+	\newpage
 	\section{MOSFETs as Amplifiers}
+	\subsection{MOSFET Fundamentals}
+	\begin{outline}[enumerate]
+		\1 FET: an electric field is applied normal to the surface (gate) of a semiconductor that modulates the conductance of the semiconductor
+			\2 NMOS: uses electrons as charge carriers
+			\2 PMOS: uses holes as charge carriers
+		\1 The source and drain terminals are heavily doped (n for NMOS, p for PMOS)
+			\2 Enhancement Mode: default off
+			\2 Depletion Mode: default on
+		\1 Threshold voltage: minimum $V_{GS}$ for the MOSFET to conduct 	
+		\1 Saturation Voltage: minimum $V_{DS}$ that causes the channel of the transistor to pinch-off in the drain side due to widening depletion region in the drain bulk junction
+		\1 MOSFET Regions of Operation:
+		\begin{center}
+			\begin{tabular}{|l|l|l|}
+				\hline 
+			Region of Operation & Conditions (NMOS) & Current $I_{D}$ \\ \hline 
+			Cut-off & $V_{GS} < V_{Th,~n}$ & $I_{D} = 0$ \\ \hline 
+			\multirow{2}{*}{Linear} & $V_{GS} \geq V_{Th,~n}$ & \multirow{2}{*}{$I_{D} = k_{n} \left( V_{GS} - V_{Th,~n} - \frac{V_{DS}}{2} \right) V_{DS}$} \\ 
+			& $V_{DS} < V_{GS} - V_{Th,~n}$ & \\ \hline
+			\multirow{2}{*}{Saturation} & $V_{GS} \geq V_{Th,~n}$ & \multirow{2}{*}{$I_{D} = \frac{1}{2}k_{n} \left( V_{GS} - V_{Th,~n} \right)^{2}$} \\ 
+			& $V_{DS} \geq V_{GS} - V_{Th,~n}$ & \\ \hline
+			Region of Operation & Conditions (PMOS) & Current $I_{D}$ \\ \hline 
+			Cut-off & $V_{GS} < V_{Th,~n}$ & $I_{D} = 0$ \\ \hline 
+			\multirow{2}{*}{Linear} & $V_{SG} \geq \absolute{V_{Th,~p}}$ & \multirow{2}{*}{$I_{D} = -k_{p} \left( V_{SG} - V_{Th,~p} - \frac{V_{SD}}{2} \right) V_{SD}$} \\ 
+			& $V_{SD} < V_{SG} - V_{Th,~p}$ & \\ \hline
+			\multirow{2}{*}{Saturation} & $V_{SG} \geq V_{Th,~p}$ & \multirow{2}{*}{$I_{D} = -\frac{1}{2}k_{p} \left( V_{SG} - V_{Th,~p} \right)^{2}$} \\ 
+			& $V_{SD} \geq V_{SG} - V_{Th,~p}$ & \\ \hline
+			\end{tabular}
+		\end{center}
+	\end{outline}
+
+	\subsection{MOSFET DC Characterization}
+	\begin{outline}[enumerate]
+		\1 Steps in solving MOSFET circuits:	
+			\2 Identify the terminals
+			\2 Solve for voltage terminals
+			\2 Use the current equation to ge $I_{D}$. assume saturation if region of operation is unknown
+	\end{outline}
+
+	\subsection{MOSFET Amplifier}
+	\begin{outline}[enumerate]
+		\1 Common Source Amplifier:	
+			\2 inverting amplifier
+			\2 can have large gains 
+		\begin{figure}[!htb]
+			\centering
+			\begin{minipage}{0.5\linewidth}
+				\centering
+				\begin{circuitikz}[american, arrowmos]
+					\draw (0,-0.0) node[nmos](Q2){};
+					\draw (Q2.D) to[short] (0,1.0);
+					\draw (Q2.S) to[short] (0,-1.0);
+					\draw (Q2.G) to[short] (-1,-0.0);
+					\draw (0,1.0) to[R,l=$R_{B}$] (0,3.0);
+					\draw (0,3.0) node[vcc]{$V_{DD}$};
+					\draw (0,1.0) to[short] (1,1.0);
+					\draw (0,-1.0) node[ground]{};
+					\draw (-1,-0.0) to[short] (-1.5,-0.0);
+					\draw (-1.5,-0.0) node[ocirc, label={above:$v_{IN}$}] () {};
+					\draw (1,1.0) node[ocirc, label={above:$v_{OUT}$}] () {};
+				\end{circuitikz}
+				\caption{NMOS CS Amplifier}
+			\end{minipage}%
+			\begin{minipage}{0.5\linewidth}
+				\centering
+				\begin{circuitikz}[american]
+					\draw (0,-0.0) node[pmos](Q3){};
+					\draw (Q3.S) to[short] (0,1.0);
+					\draw (Q3.D) to[short] (0,-1.0);
+					\draw (Q3.G) to[short] (-1,-0.0);
+					\draw (-1,-0.0) to[short] (-1.5,-0.0);
+					\draw (0,-1.0) to[short] (1,-1.0);
+					\draw (0,-1.0) to[R,l=$R_{B}$] (0,-3.0);
+					\draw (0,1.0) node[vcc]{$V_{DD}$};
+					\draw (0,-3.0) node[ground]{};
+					\draw (1,-1.0) node[ocirc, label={above:$v_{OUT}$}] () {};
+					\draw (-1.5,-0.0) node[ocirc, label={above:$v_{IN}$}] () {};
+				\end{circuitikz}
+				\caption{PMOS CS Amplifier}
+			\end{minipage}%
+		\end{figure}
+	
+		\1 Common Drain Amplifier:
+			\2 has a unity gain 
+			\2 non-inverting amplifier
+		\begin{figure}[!htb]
+			\centering
+			\begin{minipage}{0.5\linewidth}
+				\centering
+				\begin{circuitikz}[american]
+					\draw (0,-0.0) node[nmos](Q3){};
+					\draw (Q3.S) to[short] (0,-1.0);
+					\draw (Q3.D) to[short] (0,1.0);
+					\draw (Q3.G) to[short] (-1,-0.0);
+					\draw (-1,-0.0) to[short] (-1.5,-0.0);
+					\draw (0,-1.0) to[short] (1,-1.0);
+					\draw (0,-1.0) to[R,l=$R_{B}$] (0,-3.0);
+					\draw (0,1.0) node[vcc]{$V_{DD}$};
+					\draw (0,-3.0) node[ground]{};
+					\draw (1,-1.0) node[ocirc, label={above:$v_{OUT}$}] () {};
+					\draw (-1.5,-0.0) node[ocirc, label={above:$v_{IN}$}] () {};
+				\end{circuitikz}
+				\caption{NMOS CD Amplifier}
+			\end{minipage}%
+			\begin{minipage}{0.5\linewidth}
+				\centering
+				\begin{circuitikz}[american, arrowmos]
+					\draw (0,-0.0) node[pmos](Q2){};
+					\draw (Q2.D) to[short] (0,-1.0);
+					\draw (Q2.S) to[short] (0,1.0);
+					\draw (Q2.G) to[short] (-1,-0.0);
+					\draw (0,1.0) to[R,l=$R_{B}$] (0,3.0);
+					\draw (0,3.0) node[vcc]{$V_{DD}$};
+					\draw (0,1.0) to[short] (1,1.0);
+					\draw (0,-1.0) node[ground]{};
+					\draw (-1,-0.0) to[short] (-1.5,-0.0);
+					\draw (-1.5,-0.0) node[ocirc, label={above:$v_{IN}$}] () {};
+					\draw (1,1.0) node[ocirc, label={above:$v_{OUT}$}] () {};
+				\end{circuitikz}
+				\caption{PMOS CD Amplifier}
+			\end{minipage}%
+		\end{figure}	
+	
+		\newpage
+		\1 Common Gate Amplifier:
+			\2 non-inevrting amplifier
+			\2 can have gain more than $1$
+		\begin{figure}[!htb]
+			\centering
+			\begin{minipage}{0.5\linewidth}
+				\centering
+				\begin{circuitikz}[american, arrowmos]
+					\draw (0,-0.0) node[nmos, rotate=90, yscale = -1](Q2){};
+					\draw (Q2.D) to[short] (1,0.0);
+					\draw (Q2.G) to[short] (0,-1.0);
+					\draw (Q2.S) to[short] (-1,-0.0);
+					\draw (1,0.0) to[short] (1,1.0);
+					\draw (1,1.0) to[R,l=$R_{B}$] (1,3.0);
+					\draw (1,3.0) node[vcc]{$V_{DD}$};
+					\draw (1,1.0) to[short] (2,1.0);
+					\draw (0,-1.0) node[ground]{};
+					\draw (-1,-0.0) to[short] (-1.5,-0.0);
+					\draw (-1.5,-0.0) node[ocirc, label={above:$v_{IN}$}] () {};
+					\draw (2,1.0) node[ocirc, label={above:$v_{OUT}$}] () {};
+				\end{circuitikz}
+				\caption{NMOS CG Amplifier}
+			\end{minipage}%
+			\begin{minipage}{0.5\linewidth}
+				\centering
+				\begin{circuitikz}[american]
+					\draw (0,-0.0) node[pmos, rotate = -90, yscale = -1, xscale = -1](Q3){};
+					\draw (Q3.G) to[short] (0,-2.0);
+					\draw (Q3.S) to[short] (-1.5,-0.0);
+					\draw (Q3.D) to[short] (1.5,-0.0);
+					\draw (0,-2.0) node[ground]{};
+					\draw (-1.5,-0.0) node[ocirc, label={above:$v_{IN}$}] () {};
+					\draw (1.5,-0.0) to[R, l = $R_{B}$] (1.5,-2.0); 
+					\draw (1.5,-2.0) node[ground]{};
+					\draw (1.5,-0.0) to[short] (2.5,-0.0);
+					\draw (2.5,-0.0) node[ocirc, label={above:$v_{OUT}$}] () {};
+				\end{circuitikz}
+				\caption{PMOS CG Amplifier}
+			\end{minipage}%
+		\end{figure}	
+	\end{outline}
+	
+	\newpage
 	\section{Small Signal Analysis of Transistor Amplifiers}
+	\subsection{Two Port Networks}
+	\begin{outline}[enumerate]
+		\1 one port serves as input, the other as output
+		\1 $Z$ parameters: impedance parameters. taken for open circuit of both ports
+		\begin{equation*}
+			\begin{bmatrix} V_{1} \\ V_{2} \end{bmatrix} = \begin{bmatrix} Z_{1,~1} & Z_{1,~2} \\ Z_{2,~1} & Z_{2,~2} \end{bmatrix} \begin{bmatrix} I_{1} \\ I_{2} \end{bmatrix}
+		\end{equation*}
+		\1 $Y$ parameters: admittance parameters. taken for short circuit of both ports
+		\begin{equation*}
+			\begin{bmatrix} I_{1} \\ I_{2} \end{bmatrix} = \begin{bmatrix} Y_{1,~1} & Y_{1,~2} \\ Y_{2,~1} & Y_{2,~2} \end{bmatrix} \begin{bmatrix} V_{1} \\ V_{2} \end{bmatrix}
+		\end{equation*}
+		\1 $h$ parameters: hybrid parameters. first column is short circuit of Port 2, second column is open circuit for Port 1
+		\begin{equation*}
+			\begin{bmatrix} V_{1} \\ I_{2} \end{bmatrix} = \begin{bmatrix} h_{1,~1} & h_{1,~2} \\ h_{2,~1} & h_{2,~2} \end{bmatrix} \begin{bmatrix} I_{1} \\ V_{2} \end{bmatrix}
+		\end{equation*}
+		\1 $g$ parameters: inverse hybrid parameters. tfirst column is open circuit of Port 2, second column is short circuit for Port 1
+		\begin{equation*}
+			\begin{bmatrix} I_{1} \\ V_{2} \end{bmatrix} = \begin{bmatrix} g_{1,~1} & g_{1,~2} \\ g_{2,~1} & g_{2,~2} \end{bmatrix} \begin{bmatrix} V_{1} \\ I_{2} \end{bmatrix}
+		\end{equation*}
+		\1 Unilateral Hybrid $\pi$ Network: only has $3$ parameters
+			\2 $R_{i},~R_{o},~A_{v}$ for Thevenin Equivalent
+			\2 $R_{i},~R_{o},~G_{m}$ for Norton Equivalent
+		\begin{figure}[!htb]
+			\centering
+			\begin{minipage}{0.5\linewidth}
+				\centering
+				\begin{circuitikz}[american]
+					\draw (0,-0.0) to[short, f = $i_{i}$] (2,-0.0);
+					\draw (0,-2.0) to[short] (2,-2.0);
+					\draw (2,-0.0) to[R,l=$R_{i}$] (2,-2.0);
+					\draw (2,-2.0) to[short] (4,-2.0);
+					\draw (4,-0.0) to[cV,l=$A_{v}v_{i}$] (4,-2.0);
+					\draw (4,-0.0) to[R,l=$R_{o}$] (6,-0.0);
+					\draw (4,-2.0) to[short] (7,-2.0);
+					\draw (6,-0.0) to[short, f< = $i_{o}$] (7,-0.0);
+					\draw (7,-0.0) node[ocirc] () {};
+					\draw (0,-0.0) node[ocirc] () {};
+					\draw (7,-2.0) node[ocirc] () {};
+					\draw (0,-2.0) node[ocirc] () {};
+					\draw (0,-0.0) to[open, v = $v_{i}$] (0,-2.0);
+					\draw (7,-0.0) to[open, v = $v_{o}$] (7,-2.0);
+				\end{circuitikz}
+				\caption{Thevenin Equivalent}
+			\end{minipage}%
+			\begin{minipage}{0.5\linewidth}
+				\centering
+				\begin{circuitikz}[american]
+					\draw (0,-0.0) to[short, f = $i_{i}$] (2,-0.0);
+					\draw (0,-2.0) to[short] (2,-2.0);
+					\draw (2,-0.0) to[R,l=$R_{i}$] (2,-2.0);
+					\draw (2,-2.0) to[short] (4,-2.0);
+					\draw (4,-2.0) to[short] (7,-2.0);
+					\draw (4,-0.0) to[cI,l=$G_{m}v_{i}$] (4,-2.0);
+					\draw (6,-0.0) to[R,l=$R_{o}$] (6,-2.0);
+					\draw (4,-0.0) to[short] (6,-0.0);
+					\draw (6,-0.0) to[short, f< = $i_{o}$] (7,-0.0);
+					\draw (7,-0.0) node[ocirc] () {};
+					\draw (0,-0.0) node[ocirc] () {};
+					\draw (7,-2.0) node[ocirc] () {};
+					\draw (0,-2.0) node[ocirc] () {};
+					\draw (0,-0.0) to[open, v = $v_{i}$] (0,-2.0);
+					\draw (7,-0.0) to[open, v = $v_{o}$] (7,-2.0);
+				\end{circuitikz}
+				\caption{Norton Equivalent}
+			\end{minipage}%
+			\caption{Unilateral Hybrid $\pi$ Network}
+		\end{figure}	
+	\end{outline}
+
+	\subsection{Small Signal Model}
+	\begin{center}
+	\begin{tabular}{|l|l|l|}
+		\hline 
+		Parameter & BJT & MOSFET \\ \hline
+		$g_{m}$ Transconductance & $g_{m} = \frac{I_{C}}{V_{T}}$ & $g_{m} = \frac{2I_{D}}{V_{GS} - V_{Th,~n}} = \sqrt{2K_{n}I_{D} \left(1 + \lambda V_{DS}\right)} \approx \sqrt{2K_{n}I_{D}}$ \\ \hline
+		$r_{\pi}$ Input Resistance & $r_{\pi} = \frac{\beta}{g_{m}} = \frac{\beta V_{T}}{I_{C}}$ & $r_{\pi} = \infty$ \\ \hline
+		$r_{o}$ Output Resistance & $r_{o} = \frac{V_{A} + V_{CE}}{I_{C}} \approx \frac{V_{A}}{I_{C}}$ & $\frac{1}{I_{D}} \left( \frac{1}{\lambda} + V_{DS}\right) \approx \frac{1}{\lambda I_{D}}$ \\ \hline
+	\end{tabular}
+	\end{center}
+	\begin{outline}[enumerate]
+		\1 the approximations above are from:
+			\2 $V_{A} \gg V_{CE}$
+			\2 $\lambda \ll \frac{1}{V_{DS}}$
+	\end{outline}
+	\begin{figure}[!htb]
+		\centering
+		\begin{minipage}{0.5\linewidth}
+			\centering
+			\begin{circuitikz}[american]
+				\draw (0,-0.0) to[short] (1,-0.0);
+				\draw (1,-0.0) to[open,v=$v_{gs}$] (1,-2.0);
+				\draw (1,-2.0) to[short] (5,-2.0);
+				\draw (3,-0.0) to[cI,l=$g_{m}v_{gs}$] (3,-2.0);
+				\draw (5,-0.0) to[R,l=$r_{o}$] (5,-2.0);
+				\draw (3,-0.0) to[short] (5,-0.0);
+				\draw (5,-0.0) to[short] (6,-0.0);
+				\draw (3,-1.0) to[short] (3,-3.0);
+				\draw (1,-0.0) node[circ] () {};
+				\draw (1,-2.0) node[circ] () {};
+				\draw (0,-0.0) node[ocirc, label={above:$G$}] () {};
+				\draw (3,-3.0) node[ocirc, label={below:$S$}] () {};
+				\draw (6,-0.0) node[ocirc, label={above:$D$}] () {};
+			\end{circuitikz}
+			\caption{MOSFET Small Signal Model}
+		\end{minipage}%
+		\begin{minipage}{0.5\linewidth}
+			\centering
+			\begin{circuitikz}[american]
+				\draw (0,-0.0) to[short] (1,-0.0);
+				\draw (1,-0.0) to[R, l = $r_{\pi}$] (1,-2.0);
+				\draw (0.5,-0.0) to[open, v = $v_{\pi}$] (0.5,-2.0);
+				\draw (1,-2.0) to[short] (5,-2.0);
+				\draw (3,-0.0) to[cI,l=$g_{m}v_{\pi}$] (3,-2.0);
+				\draw (5,-0.0) to[R,l=$r_{o}$] (5,-2.0);
+				\draw (3,-0.0) to[short] (5,-0.0);
+				\draw (5,-0.0) to[short] (6,-0.0);
+				\draw (3,-1.0) to[short] (3,-3.0);
+				\draw (0,-0.0) node[ocirc, label={above:$B$}] () {};
+				\draw (3,-3.0) node[ocirc, label={below:$E$}] () {};
+				\draw (6,-0.0) node[ocirc, label={above:$C$}] () {};
+			\end{circuitikz}
+			\caption{BJT Small Signal Model}
+		\end{minipage}%
+	\end{figure}
+
+	\subsection{Small Signal Analysis}
+	\begin{outline}[enumerate]
+		\1 Amplifier Parameters:
+			\begin{center}
+			\begin{tabular}{|l|l|}
+				\hline 
+				Voltage Gain & $A_{v} = \frac{v_{o}}{v_{i}}$ \\ \hline 
+				Open-loop Gain & $A_{vo} = \left. \frac{v_{o}}{v_{i}} \right|_{R_{L} \to \infty}$ \\ \hline
+				Input Resistance & $R_{i} = \frac{v_{i}}{i_{i}}$ \\ \hline
+				Output Resistance of Amplifier & $R_{o} = \left. \frac{v_{o}}{i_{o}} \right|_{v_{i} \to 0}$ \\ \hline
+				Output Resistance of the circuit & $R_{out} = \left. \frac{v_{o}}{i_{o}} \right|_{v_{sig} \to 0}$ \\ \hline
+				Overall Gain & $A = \frac{R_{i}}{R_{i} + R_{sig}}A_{v}$ \\ \hline
+			\end{tabular}
+			\end{center}
+		\1 Design considerations:
+			\2 $R_{i} \gg R_{sig}$
+			\2 $R_{o} \ll R_{L}$
+		\1 Solving Amplifier Circuits
+			\2 Find Bias and Signal Circuits
+			\2 Get the bias (Q point) values	
+				\3 capacitors are open
+				\3 large signal models
+			\2 Get the signal paramaters	
+				\3 capacitors are shorts
+				\3 independent sources are suppressed
+				\3 replace with small signal model	
+			\2 Terminal Resistance:
+				\3 Consider that a voltage $v_{x}$ and current $i_{x}$	is supplied through the terminal. the terminal resistance is $\frac{v_{x}}{i_{x}}$
+	\end{outline}
+	
 	\section{Amplifier Frequency Response}
 \end{document}
