@@ -4,8 +4,8 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-%\rhead{Math 40 - WFY | Julius Basilla}
-%\chead{2019-04243}
+%\rhead{Subject}
+%\chead{}
 \lhead{EEE 133 Key concepts and equations}
 \cfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
 
@@ -443,7 +443,7 @@
 	\1 Resistor:
 	\begin{figure}[!htb]
 		\centering
-		\begin{minipage}{.5\textwidth}
+		\begin{minipage}{0.5\textwidth}
 			\centering 
 			\begin{circuitikz}[american]
 				\draw (0,0) node[ocirc] (pos) {}  to[R, v = $v(t)$, f = $i(t)$] (0,-2) node[ocirc] (neg) {} ;
@@ -611,21 +611,34 @@
 	\section{Filter Transient Response and Design}
 	\begin{figure}[!htb]
 		\centering
-		\begin{circuitikz}[american, scale = 0.75]
-			\draw (0,0) node[op amp, yscale = -1] (op1) {}
-			(op1.+) -- ++(-2,0) coordinate(B)
-			(op1.out) to[R, l = $R_{f}$] ++(0,-2) coordinate(C) to [R, l = $R_{1}$] ++(0,-2) node[ground] () {} 
-			(op1.out) -- ++(2,0) node[ocirc, label = {right:$v_{o}$}] () {}
-			(op1.-) -- ++(-0.5,0) |- (C)
-			(B) to[C, l = $C$] ++(0,-3.5) node[ground] () {}
-			(B) to[R, l = $R$] ++(-3,0) coordinate(D) to[R, l = $R$] ++(-3,0) node[ocirc, label = {left:$v_{i}$}] () {} 
-			(D) |- ++(3,2) to[C, l = $C$] ++(2,0) -| (op1.out)
-			; 
+		\begin{circuitikz}[american]
+			\draw (6.5,-0.5) node[op amp, yscale = -1] (opamp6) {};
+			\draw (opamp6.-) to[short] (4.5,-1.0);
+			\draw (opamp6.+) to[short] (4.5,-0.0);
+			\draw (opamp6.out) to[short] (8.5,-0.5);
+			\draw (3.5,-0.0) to[C,l=$C$] (3.5,-4.5);
+			\draw (8.5,-0.5) to[R,l=$R_{f}$] (8.5,-2.5);
+			\draw (8.5,-2.5) to[R,l=$R_{1}$] (8.5,-4.5);
+			\draw (8.5,-4.5) node[ground]{};
+			\draw (3.5,-4.5) node[ground]{};
+			\draw (4.5, -1) |- (8.5,-2.5);
+			\draw (8.5,-0.5) to[short] (10,-0.5);
+			\draw (10,-0.5) node[ocirc, label={right:$v_{out}$}] {};
+			\draw (-0.5,-0.0) node[ocirc, label={left:$v_{in}$}] {};
+			\draw (1.5,-0.0) to[R,l=$R$] (3.5,-0.0);
+			\draw (-.5,-0.0) to[R,l=$R$] (1.5,-0.0);
+			\draw (1.5,-0.0) -- (1.5,2.0);
+			\draw (1.5,2.0) to[C,l=$C$] (8.5,2.0);
+			\draw (8.5,2.0) -- (8.5,-0.5);
+			\draw (3.5,-0.0) -- (4.5,-0.0);
 		\end{circuitikz}
-		\caption{Sallen-Key Lowpass Filter}
+		\caption{Sallen-Key Lowpass Filter Topology}
 	\end{figure}
 	\begin{outline}[enumerate]
-		\1 $\frac{V_{o} \left( s \right)}{V_{i} \left( s \right)} = \frac{1}{s^{2} \left( RC \right)^{2} + 2s \left( \frac{3 - K}{2} \right) + 1}$
+		\1 The transfer function is:
+		\begin{equation}
+			\frac{V_{o} \left( s \right)}{V_{i} \left( s \right)} = \frac{1}{s^{2} \left( RC \right)^{2} + 2s \left( \frac{3 - K}{2} \right) + 1} 
+		\end{equation}
 			\2 $K = \frac{R_{f} + R_{1}}{R_{1}}$
 			\2 $\omega_{0} = \frac{1}{RC}$
 			\2 $\alpha = \frac{3 - K}{2RC}$
@@ -685,7 +698,7 @@
 			\2 $t_\text{on} = DT = \frac{D}{f}$
 			\2 $D = \frac{V_{o}}{V_{s}}$
 			\2 $L = \frac{1}{2} \frac{D}{f} \left( \frac{V_{s} - V_{o}}{\frac{V_{o}}{R} - I_\text{min} } \right)$
-			\2 boundary inductor (at $I_\text{min}$): $L_{b} = \frac{D \left( V_{s} - V_{o} \right) R}{2fV_{o}} = \frac{R \left( 1 - D \right)}{2f}$
+			\2 boundary inductor (at $I_\text{min} = 0$): $L_{b} = \frac{D \left( V_{s} - V_{o} \right) R}{2fV_{o}} = \frac{R \left( 1 - D \right)}{2f}$
 				\3 $L < L_{b}$: DCM operation
 				\3 $L = L_{b}$: CDCM operation
 				\3 $L > L_{b}$: CCM operation
