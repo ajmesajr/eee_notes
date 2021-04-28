@@ -745,7 +745,7 @@
 	
 		\newpage
 		\1 Common Gate Amplifier:
-			\2 non-inevrting amplifier
+			\2 non-inverting amplifier
 			\2 can have gain more than $1$
 		\begin{figure}[!htb]
 			\centering
@@ -921,12 +921,15 @@
 				\hline 
 				Voltage Gain & $A_{v} = \frac{v_{o}}{v_{i}}$ \\ \hline 
 				Open-loop Gain & $A_{vo} = \left. \frac{v_{o}}{v_{i}} \right|_{R_{L} \to \infty}$ \\ \hline
-				Input Resistance & $R_{i} = \frac{v_{i}}{i_{i}}$ \\ \hline
-				Output Resistance of Amplifier & $R_{o} = \left. \frac{v_{o}}{i_{o}} \right|_{v_{i} \to 0}$ \\ \hline
-				Output Resistance of the circuit & $R_{out} = \left. \frac{v_{o}}{i_{o}} \right|_{v_{sig} \to 0}$ \\ \hline
+				Input Resistance & $R_{i} = \left. \frac{v_{i}}{i_{i}} \right|_{i_{out} = 0}$ \\ \hline
+				Output Resistance of Amplifier & $R_{o} = \left. \frac{v_{o}}{i_{o}} \right|_{v_{in} = 0}$ \\ \hline
+				Output Resistance of the circuit & $R_{out} = \left. \frac{v_{o}}{i_{o}} \right|_{v_{sig} = 0}$ \\ \hline
+				Equivalent Transistor Gain & $G_{m} = \left. \frac{i_{o}}{v_{i}} \right|_{v_{o} = 0}$ \\ \hline
 				Overall Gain & $A = \frac{R_{i}}{R_{i} + R_{sig}}A_{v}$ \\ \hline
 			\end{tabular}
 			\end{center}
+		
+		\vspace{10mm}
 		\1 Design considerations:
 			\2 $R_{i} \gg R_{sig}$
 			\2 $R_{o} \ll R_{L}$
@@ -943,5 +946,138 @@
 				\3 Consider that a voltage $v_{x}$ and current $i_{x}$	is supplied through the terminal. the terminal resistance is $\frac{v_{x}}{i_{x}}$
 	\end{outline}
 	
+	\newpage
 	\section{Amplifier Frequency Response}
+	\subsection{Introduction to Frequency Response}
+	\begin{outline}[enumerate]
+		\1 Transfer function: 
+			\begin{align*}
+				A_{v} \left( \omega \right) &= \frac{v_{o} \left( \omega \right)}{v_{i} \left( \omega \right)} \\
+				\absolute{A_{v}} &= \sqrt{\mathfrak{Re} \left( A_{v} \right)^2 + \mathfrak{Im} \left( A_{v} \right)^2} \\
+				\angle A_{v} &= \atan \left( \frac{\mathfrak{Im} \left( A_{v} \right)}{\mathfrak{Re} \left( A_{v} \right)} \right)
+			\end{align*}
+		\1 In phasor analysis: $\absolute{v_{o}} \exp \left( j \angle v_{o} \right) = \absolute{A_{v}} \absolute{v_{i}} \exp \left( j \left( \angle A_{v} + \angle v_{o} \right) \right)$	
+			\2 the $-3$ dB happens at $\omega_{0}$
+			\2 power $P_{v} \left( \omega_{0} \right) = \frac{1}{2}$ 
+		\1 Bode Plots: approximate plots for the magnitude and phase of the transfer function 
+		
+		\begin{center}
+		\begin{tabular}{|l|l|l|}
+			\hline
+			Term & Magnitude & Phase \\ \hline 
+			\multirow{2}{*}{Constant} & \multirow{2}{*}{$20\log_{10} \absolute{K}$} & $K > 0 : 0^{\circ}$ \\ 
+			& & $K < 0: \pm 180^{\circ}$ \\ \hline 
+			\multirow{2}{*}{Real Pole} & $\omega < \omega_{0}: 0$ dB/dec slope & $0.1\omega_{0} : 0^{\circ}$  \\ 
+			& $\omega \geq \omega_{0} : -20$ dB/dec slope & $10\omega_{0} : -90^{\circ}$ \\ \hline
+			\multirow{2}{*}{Real Zero} & $\omega < \omega_{0}: 0$ dB/dec slope & $0.1\omega_{0} : 0^{\circ}$  \\ 
+			& $\omega \geq \omega_{0} : +20$ dB/dec slope & $10\omega_{0} : +90^{\circ}$ \\ \hline
+			Pole at Origin & $-20$ dB/dec slope at $(1, 0)$ & $-90^{\circ}$ \\ \hline
+			Zero at Origin & $+20$ dB/dec slope at $(1, 0)$ & $+90^{\circ}$ \\ \hline
+		\end{tabular}
+		\end{center}	
+			\2 a pole/zero repeated $n$ times multiplies the slopes and $\mp 90^{\circ}$ by $n$
+			\2 if $\omega_{0} < 0$, change the signs of the phase (pole/zero) but not the magnitude
+	\end{outline}
+
+	\newpage
+	\subsection{Transistor Capacitances}
+	\begin{outline}[enumerate]
+		\1 BJT Parasitic Capacitances
+		\begin{figure}[!htb]
+			\centering
+			\begin{circuitikz}[american]
+				\draw (-2,-0.0) to[short] (1,-0.0);
+				\draw (-1,-0.0) to[C,l=$C_{\pi}$] (-1.0,-2.0);
+				\draw (1,-0.0) to[R,l=$r_{\pi}$] (1,-2.0);
+				\draw (0.5,-0.0) to[open,v=$v_{\pi}$] (0.5,-2.0);
+				\draw (-1,-2.0) to[short] (5,-2.0);
+				\draw (1,-0.0) to[C,l=$C_{\mu}$] (3,-0.0);
+				\draw (3,-0.0) to[cI,l=$g_{m}v_{\pi}$] (3,-2.0);
+				\draw (5,-0.0) to[R,l=$r_{o}$] (5,-2.0);
+				\draw (3,-0.0) to[short] (6,-0.0);
+				\draw (2,-2.0) to[short] (2,-3.0);
+				\draw (-2,-0.0) node[ocirc,label={above:$B$}] () {};
+				\draw (2,-3.0) node[ocirc,label={below:$E$}] () {};
+				\draw (6,-0.0) node[ocirc,label={above:$C$}] () {};
+			\end{circuitikz}
+			\caption{BJT Small Signal Model with Parasitic Capacitances}
+		\end{figure}
+			\2 $C_{\pi} = C_{b} + C_{je}$
+			\2 BCJ Capacitance ($5 - 10$ fF): $C_{\mu} = \frac{C_{\mu 0}}{\sqrt{1 + \frac{V_{CB}}{V_{j,~CB}}}}$
+				\3 Miller Effect when Common Emitter
+			\2 Base-Charging Capacitance ($100$s fF): $C_{b} = \tau_{F}g_{m} = \tau_{F}\frac{I_{C}}{V_{T}}$ 
+				\3 forward base transit time $\tau_{F}$: average time per carrier spent crossing the base
+			\2 BEJ Capacitance ($10$s of fF): $C_{je} = \frac{C_{je0}}{\sqrt{1 + \frac{V_{BE}}{V_{j,~BE}}}} \approx 2C_{je0}$
+			
+		\1 MOSFET Parasitic Capacitances:
+		\begin{figure}[!htb]
+			\centering 
+			\begin{circuitikz}[american]
+				\draw (0,-0.0) to[short] (1,-0.0);
+				\draw (0.5,-0.0) to[open,v=$v_{gs}$] (0.5,-2.0);
+				\draw (1,-2.0) to[short] (5,-2.0);
+				\draw (3,-0.0) to[cI,l=$g_{m}v_{gs}$] (3,-2.0);
+				\draw (5,-0.0) to[R,l=$r_{o}$] (5,-2.0);
+				\draw (3,-0.0) to[short] (6,-0.0);
+				\draw (3,-1.0) to[short] (3,-3.0);
+				\draw (1,-0.0) to[C,l=$C_{gs}$] (1,-2.0);
+				\draw (1,-0.0) to[C,l=$C_{gd}$] (3,-0.0);
+				\draw (0,-0.0) node[ocirc, label={above:$G$}] () {};
+				\draw (3,-3.0) node[ocirc, label={below:$S$}] () {};
+				\draw (6,-0.0) node[ocirc, label={above:$D$}] () {};
+			\end{circuitikz}
+			\caption{MOSFET Small Signal Model}
+		\end{figure}	
+			\2 GS Capacitance (Parallel Plate + Gate Overlap): $C_{gs}$
+				\3 largest parasitic in MOSFET
+			\2 GD Capacitace (Gate Overlap only)	
+				\3 Miller Effect when Common Source 
+			\2 Source/Drain Junction: normally reverse biased and omitted in the small signal model		
+	\end{outline}
+
+	\subsection{Transition Frequency}
+	\begin{outline}[enumerate]
+		\1 Transition frequency : frequency where $\frac{i_{o}}{i_{i}} = 1$ (short circuit output gain). if $i_{o} < i_{i}$, the transistor is not working as an amplifier that that frequency
+		\1 at $\omega = 0$, the BJT current gain is $\beta$
+		\1 the BJT current transfer function: $\frac{i_{o}\left(s\right)}{i_{i}\left(s\right)} = \frac{g_{m} - sC_{\mu}}{1 / r_{\pi} + s \left( C_{\pi} + C_{\mu} \right)} = g_{m}r_{\pi} \frac{1 - s\left(\frac{C_{\mu}}{g_{m}}\right)}{1 + s \left(r_{\pi} \left(C_{\mu} + C_{\pi}\right)\right)}$
+			\2 $\omega_{z} = -\frac{g_{m}}{C_{\mu}}$
+			\2 $\omega_{p} = \frac{1}{r_{\pi}\left(C_{\mu} + C_{\pi}\right)}$
+		\1 the BJT transition frequency is $f_{T} = \frac{\omega_{T}}{2\pi} = \frac{1}{2\pi} \sqrt{\frac{g_{m}^{2} - \left( \frac{1}{r_{\pi}} \right)^{2}}{\left(C_{\pi} + C_{\mu}\right)^{2} - C_{\mu}^{2}}} \approx \frac{1}{2\pi} \frac{g_{m}}{C_{\pi} - C_{\mu}}$
+		\1 at $\omega = 0$, the MOSFTET current gain is $+\infty$
+		\1 the MOSFET current transfer function: $\frac{i_{o}}{i_{i}} = \frac{g_{m} - sC_{gd}}{s\left(C_{gd} + C_{gs}\right)} = \frac{1 - s\left(\frac{C_{gd}}{g_{m}}\right)}{s\left(\frac{C_{gd} + C_{gs}}{g_{m}}\right)}$ 
+			\2 $\omega_{z} = -\frac{g_{m}}{C_{gd}}$
+			\2 $\omega_{p} = \frac{g_{m}}{C_{gd} + C_{gs}}$
+		\1 the MOSFET transition frequency is  $f_{T} = \frac{\omega_{T}}{2\pi} = \frac{1}{2\pi}\frac{g_{m}}{\sqrt{\left(C_{gd} + C_{gs}\right)^{2} - C_{gd}^{2}}} \approx \frac{1}{2\pi} \frac{g_{m}}{C_{gd} + C_{gs}}$	
+	\end{outline}
+
+	\subsection{Frequency Response of CE Amplifier}
+	\begin{outline}[enumerate]
+		\1 $A_{v} = \left. \frac{v_{o}}{v_{i}} \right|_{i_{o} = 0}$
+		\1 $G_{m} = \left. \frac{i_{o}}{v_{i}} \right|_{v_{o} = 0}$
+		\1 $Z_{i} = \left. \frac{v_{i}}{i_{i}} \right|_{v_{o} = 0}$
+		\1 $Z_{o} = \left. \frac{v_{o}}{i_{o}} \right|_{v_{i} = 0}$
+	
+		\1 Single Pole CE Amplifier:
+			\2 $A_{v} = \left(-g_{m}R_{C}\right) \frac{1}{1 + s\left( R_{C}C_{L} \right)}$
+			\2 $Z_{i} = r_{\pi}$
+			\2 $Z_{o} = \frac{R_{C}}{1 + s\left(R_{C}C_{L}\right)}$
+
+		\1 Considering the input resistance and input capacitance
+			\2 $A_{v} = \left(-g_{m}R_{C} \frac{r_{\pi}}{r_{\pi} + R_{S}}\right) \frac{1}{\left( 1 + s \left( \frac{R_{s}r_{\pi}C_{\pi}}{R_{s} + r_{\pi}} \right) \right)}$
+			\2 $Z_{i} = \left(R_{s} + r_{\pi}\right) \frac{1 + s \left( \frac{R_{s}r_{\pi}C_{\pi}}{R_{s} + r_{\pi}} \right)}{1 + s\left( r_{\pi}C_{\pi} \right)}$
+			\2 $Z_{o} = \left(R_{C}\right)\frac{1}{1 + s\left(R_{C}C_{L}\right)}$
+
+		\1 Considering the input resistance and Miller capacitance
+			\2 $A_{v} \approx \left(-g_{m}R_{C} \frac{r_{\pi}}{r_{\pi} + R_{S}}\right) \frac{1 - s\left( \frac{C_{\mu}}{g_{m}} \right)}{\left[ 1 + s\left( R\left[ C_{L} + C_{\mu} \right] \right) \right] \left[ 1 + s \left( \frac{R_{s}r_{\pi}C_{\mu} \left(1 + g_{m}R_{C} \right)}{R_{s} + r_{\pi}} \right) \right]}$
+	\end{outline}
+
+	\subsection{Gain Bandwidth Product}
+	\begin{outline}[enumerate]
+		\1 Single Pole Amplifier: $A \left(\omega\right) = \frac{A_{o}}{1 + j\frac{\omega}{\omega_{p}}}$
+			\2 $\omega_{u} =  \omega_{p}\sqrt{A_{o}^{2} - 1} \approx A_{o}\omega_{p}$
+			\2 for all $\omega_{x} \in \left[ \omega_{p},~\omega_{u} \right],~A_{x}\omega_{x} = A_{o}\omega_{p} = GBP$
+		\1 Two Pole Amplifer: $A \left(\omega\right) = \frac{A_{o}}{\left[ 1 + j\frac{\omega}{\omega_{p1}} \right] \left[ 1 + j\frac{\omega}{\omega_{p2}} \right]}$
+			\2 case 1: $\omega_{u} > \omega_{p2} : \omega_{u} = A_{o}\omega_{p1}$
+			\2 case 2: $\omega_{u} < \omega_{p2} : \omega_{u} = \sqrt{A_{o}\omega_{p1}\omega_{p2}}$
+	\end{outline}
 \end{document}
